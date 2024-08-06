@@ -24,7 +24,7 @@ class SetJoinOnMessage extends SlashCommand {
 
   async run(interaction) {
     const localizer = this.client.localizer.getLocalizer(interaction.guild);
-    const state = interaction.options.getString('join_on_message');
+    const state = interaction.options.getString('state');
     const currentSettings = await this.client.ttsSettings.getCurrentForChannel(interaction.channel);
     let newState;
 
