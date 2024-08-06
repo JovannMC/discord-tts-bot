@@ -16,27 +16,29 @@ class SetJoinOnMessage extends SlashCommand {
           option.setName('state')
             .setDescription('Enable or disable the join on message option.')
             .setRequired(false)
-            .addChoice('enabled', 'enabled')
-            .addChoice('disabled', 'disabled')
+            .addChoice('true', 'true')
+            .addChoice('false', 'false')
         )
     });
   }
 
   async run(interaction) {
-    const localizer = this.client.localizer.getLocalizer(interaction.guild);
+    const { guild, channel } = interaction;
+    const { name: guildName, id: guildId } = guild;
+    const localizer = this.client.localizer.getLocalizer(guild);
     const state = interaction.options.getString('state');
-    const currentSettings = await this.client.ttsSettings.getCurrentForChannel(interaction.channel);
+    const currentSettings = await this.client.ttsSettings.getCurrentForChannel(channel);
     let newState;
 
     if (state) {
-      newState = state === 'enabled';
+      newState = state === 'true';
     } else {
       newState = !currentSettings.joinOnMessage;
     }
 
-    await this.client.ttsSettings.set(interaction.channel, { joinOnMessage: newState });
+    await this.client.ttsSettings.set(channel, { joinOnMessage: newState });
 
-    logger.info(`${interaction.guild.name} has ${newState ? 'enabled' : 'disabled'} the "join on message" option for ${interaction.channel.name}.`);
+    logger.info(`${guildName} (${guildId}) has ${newState ? 'enabled' : 'disabled'} the "join on message" option for ${channel.name} (${channel.id}).`);
     return interaction.reply({ content: localizer.t(`channel_commands.join.${newState ? 'enabled' : 'disabled'}`) });
   }
 }
