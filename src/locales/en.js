@@ -10,17 +10,27 @@ const ERROR = {
 };
 
 const COMMAND = {
-  'command.settings.default.no_settings': 'No settings associated to this provider.',
+  'command.settings.default.no_settings': 'No settings associated.',
   'command.settings.default.embed.title': "Here's the current default settings for this guild",
   'command.settings.default.embed.description': 'Keep in mind that these settings do not reflect what your personal may be. These settings will be used if you have not set your own.',
   'command.settings.default.current.provider': 'Current provider',
+  'command.settings.default.aliases.title': 'Guild aliases',
 
-  'command.settings.my.no_settings': 'No settings associated to this provider.',
+  'command.settings.my.no_settings': 'No settings associated.',
   'command.settings.my.embed.title': "Here's your current settings, {name}",
-  'command.settings.my.embed.description': "Keep in mind that if you haven't set a setting yet you will see the default ones here.",
+  'command.settings.my.embed.description': "Keep in mind that if you haven't set a setting yet you may see the default ones here.",
   'command.settings.my.current.provider': 'Current provider',
+  'command.settings.my.user.aliases': 'User aliases',
 
   'command.set.default.provider.success': 'You have successfully changed the default provider to **{name}**.',
+
+  'command.set.alias.guild.notFound': 'The guild alias for **{key}** does not exist.',
+  'command.set.alias.guild.success': 'You have successfully set a guild alias for **{key}** to **{value}**.',
+  'command.set.alias.guild.removed': 'You have successfully removed the guild alias for **{key}**.',
+
+  'command.set.alias.user.notFound': 'The user alias for **{key}** does not exist.',
+  'command.set.alias.user.success': 'You have successfully set a user alias for **{key}** to **{value}**.',
+  'command.set.alias.user.removed': 'You have successfully removed the user alias for **{key}**.',
 
   'command.set.my.provider.success': 'You have successfully changed your provider to **{name}**.',
 

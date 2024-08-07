@@ -61,7 +61,7 @@ class SayBaseCommand extends SlashCommand {
       }
 
       await interaction.editReply(localizer.t('command.say.success'));
-      return ttsPlayer.say(message, providerName, extras);
+      return ttsPlayer.say(message, interaction.member, providerName, extras);
     }
 
     const cantConnectReason = getCantConnectToChannelReason(memberChannel);
@@ -73,7 +73,7 @@ class SayBaseCommand extends SlashCommand {
     await ttsPlayer.voice.connect(memberChannel);
     logger.info(`Joined "${memberChannel.name}" (${memberChannel.id}) in "${guildName}" (${guildId}).`);
     await interaction.editReply(localizer.t('command.say.joined', { channel: memberChannel.toString() }));
-    return ttsPlayer.say(message, providerName, extras);
+    return ttsPlayer.say(message, interaction.member, providerName, extras);
   }
 }
 

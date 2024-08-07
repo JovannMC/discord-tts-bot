@@ -12,7 +12,7 @@ const EMBED_FIELD_MAX_SIZE = 1024;
 
 const DISCONNECT_TIMEOUT = {
   MIN: 0,
-  MAX: 300
+  MAX: 600
 };
 
 const WEBSITE_URL = 'https://docs.moonstar-x.dev/discord-tts-bot/';

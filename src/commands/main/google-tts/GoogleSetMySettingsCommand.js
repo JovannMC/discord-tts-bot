@@ -46,13 +46,13 @@ class GoogleSetMySettingsCommand extends SlashCommand {
     const languageInfo = languages[language];
 
     if (!languageInfo) {
-      return interaction.reply({ content: localizer.t('command.google.settings.my.language.invalid'), ephemeral: true });
+      return interaction.reply({ content: localizer.t('command.google.settings.my.language.invalid')});
     }
 
     await this.client.ttsSettings.set(interaction.member, { [GoogleProvider.NAME]: { language } });
 
     logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Google language to "${language}".`);
-    return interaction.reply({ content: localizer.t('command.google.settings.my.language.success', { language: languageInfo.name }), ephemeral: true });
+    return interaction.reply({ content: localizer.t('command.google.settings.my.language.success', { language: languageInfo.name }) });
   }
 
   async handleSpeed(interaction, localizer) {
@@ -63,7 +63,7 @@ class GoogleSetMySettingsCommand extends SlashCommand {
     await this.client.ttsSettings.set(interaction.member, { [GoogleProvider.NAME]: { speed } });
 
     logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Google speed to "${speed}".`);
-    return interaction.reply({ content: localizer.t('command.google.settings.my.speed.success', { speed }), ephemeral: true });
+    return interaction.reply({ content: localizer.t('command.google.settings.my.speed.success', { speed }) });
   }
 
   async run(interaction) {

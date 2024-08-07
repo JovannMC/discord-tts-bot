@@ -32,7 +32,7 @@ class SetMyProviderCommand extends SlashCommand {
     await this.client.ttsSettings.set(interaction.member, { provider: providerName });
 
     logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their provider to "${providerName}".`);
-    return interaction.reply({ content: localizer.t('command.set.my.provider.success', { name: providerFriendlyName }), ephemeral: true });
+    return interaction.reply({ content: localizer.t('command.set.my.provider.success', { name: providerFriendlyName }) });
   }
 }
 

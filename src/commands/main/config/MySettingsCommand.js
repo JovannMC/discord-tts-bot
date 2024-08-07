@@ -21,37 +21,46 @@ class MySettingsCommand extends SlashCommand {
       const friendlyName = ProviderManager.PROVIDER_FRIENDLY_NAMES[name];
       const values = settings[name];
       const valueKeys = Object.keys(values);
-
+  
       if (valueKeys.length < 1) {
         return { title: friendlyName, text: localizer.t('command.settings.my.no_settings') };
       }
-
+  
       const text = valueKeys.reduce((text, key) => {
         const setting = values[key];
         return text.concat(`• **${key}**: ${setting}\n`);
       }, '');
-
+  
       return { title: friendlyName, text };
     });
   }
-
+  
   async run(interaction) {
     const localizer = this.client.localizer.getLocalizer(interaction.guild);
     const { provider, ...restSettings } = await this.client.ttsSettings.getCurrent(interaction);
-
+    const userSettings = await this.client.ttsSettings.get(interaction.member);
+    const userAliases = userSettings.aliases || {};
+  
     const fields = this.prepareFields(restSettings, localizer);
     const embed = new MessageEmbed()
       .setTitle(localizer.t('command.settings.my.embed.title', { name: interaction.member.displayName }))
       .setColor(MESSAGE_EMBED.color)
       .setDescription(localizer.t('command.settings.my.embed.description'))
       .addField(localizer.t('command.settings.my.current.provider'), ProviderManager.PROVIDER_FRIENDLY_NAMES[provider]);
-
+  
     for (const key in fields) {
       const field = fields[key];
       embed.addField(field.title, field.text, true);
     }
-
-    return interaction.reply({ embeds: [embed], ephemeral: true });
+  
+    if (Object.keys(userAliases).length > 0) {
+      const aliasesText = Object.entries(userAliases).reduce((text, [key, value]) => {
+        return text.concat(`• **${key}**: ${value}\n`);
+      }, '');
+      embed.addField(localizer.t('command.settings.my.user.aliases'), aliasesText, true);
+    }
+  
+    return interaction.reply({ embeds: [embed] });
   }
 }
 

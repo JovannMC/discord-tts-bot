@@ -1,3 +1,6 @@
+/* eslint-disable max-params */
+/* eslint-disable max-statements */
+
 const logger = require('@greencoast/logger');
 const { createAudioResource } = require('@discordjs/voice');
 const Queue = require('../Queue');
@@ -40,18 +43,47 @@ class TTSPlayer {
     });
   }
 
-  async say(sentence, providerName, extras = {}) {
+  async say(sentence, member, providerName, extras = {}) {
+    const userSettings = await this.client.ttsSettings.get(member);
+    const guildSettings = await this.client.ttsSettings.get(this.guild);
+    const userAliases = userSettings.aliases || {};
+    const guildAliases = guildSettings.aliases || {};
+    let finalSentence = sentence;
+  
+    for (const [key, value] of Object.entries(userAliases)) {
+      if (!sentence.includes(key)) {
+        continue;
+      }
+      
+      finalSentence = finalSentence.replace(new RegExp(key, 'g'), value);
+      logger.info(`Replaced "${key}" with "${value}" in the sentence "${sentence}". Found in user aliases.`);
+      logger.info(`Final sentence: "${finalSentence}".`);
+    }
+  
+    for (const [key, value] of Object.entries(guildAliases)) {
+      if (!sentence.includes(key)) {
+        continue;
+      }
+      
+      finalSentence = finalSentence.replace(new RegExp(key, 'g'), value);
+      logger.info(`Replaced "${key}" with "${value}" in the sentence "${sentence}". Found in guild aliases.`);
+      logger.info(`Final sentence: "${finalSentence}".`);
+    }
+  
     const provider = this.providerManager.getProvider(providerName);
-    const payload = await provider.createPayload(sentence, extras);
-
+    const payload = await provider.createPayload(finalSentence, extras);
     if (Array.isArray(payload)) {
-      payload.forEach((p) => this.queue.enqueue(p));
+      payload.forEach((p) => {
+        p.sentence = finalSentence;
+        this.queue.enqueue(p);
+      });
     } else {
+      payload.sentence = finalSentence;
       this.queue.enqueue(payload);
     }
-
+  
     this.startDisconnectScheduler();
-
+  
     if (!this.speaking) {
       this.play();
     }
