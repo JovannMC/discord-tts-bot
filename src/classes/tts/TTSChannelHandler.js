@@ -38,7 +38,7 @@ class TTSChannelHandler {
     const settings = await this.client.ttsSettings.getCurrentForChannel(message.channel);
     const extras = settings[channelSettings.provider];
   
-    const { me: { voice: myVoice }, name: guildName, members, channels, roles } = message.guild;
+    const { me: { voice: myVoice }, name: guildName, id: guildId, members, channels, roles } = message.guild;
     const { channel: memberChannel } = message.member.voice;
     const myChannel = myVoice?.channel;
   
@@ -48,25 +48,15 @@ class TTSChannelHandler {
       channels: channels.cache,
       roles: roles.cache
     });
-  
-    if (!memberChannel) {
-      return message.reply(localizer.t('command.say.no_channel'));
+
+    const { joinOnMessage } = channelSettings;
+    if (!joinOnMessage && !myChannel || !memberChannel || myChannel !== memberChannel) {
+      return;
     }
   
     if (connection) {
-      if (myChannel !== memberChannel) {
-        return message.reply(localizer.t('command.say.different_channel'));
-      }
-  
       return ttsPlayer.say(textToSay, channelSettings.provider, extras);
     }
-  
-    const { joinOnMessage } = channelSettings;
-    if (!joinOnMessage && !myChannel) {
-      return;
-    }
-
-    logger.info(`Joining ${memberChannel.name} in ${guildName}.`);
   
     const cantConnectReason = getCantConnectToChannelReason(memberChannel);
     if (cantConnectReason) {
@@ -74,7 +64,7 @@ class TTSChannelHandler {
     }
   
     await ttsPlayer.voice.connect(memberChannel);
-    logger.info(`Joined ${memberChannel.name} in ${guildName}.`);
+    logger.info(`Joining ${memberChannel.name} (${memberChannel.id}) in ${guildName} (${guildId}).`);
     await message.reply(localizer.t('command.say.joined', { channel: memberChannel.toString() }));
     return ttsPlayer.say(textToSay, channelSettings.provider, extras);
   }
