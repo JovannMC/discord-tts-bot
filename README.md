@@ -12,13 +12,33 @@ This is a simple TTS Bot that uses the Google Translate TTS API. With this bot y
 
 For more information, visit the bot's [official page](https://docs.moonstar-x.dev/discord-tts-bot/).
 
+## Changes in this fork
+
+- New commands
+  - /join - Lets the bot join in your voice channel.
+  - /skip - Skips the current TTS message being said and moves to the next one in queue.
+  - /set_alias - Set an alternative way for the TTS to say a word/phrase for the user.
+  - /set_guild_alias - Set an alternative way for the TTS to say a word/phrase for the guild.
+  - /set_join_on_message - Sets if the bot joins the VC automatically when a message is sent on specific channels.
+- Set aliases for the user or the entire guild
+- Bot automatically leaves when all users leave channel
+- Set timeout to 0 (never) to left bot stay in channel indefinitely (until all users leave or manually kicked)
+- Stops some unnecessary messages/behaviour I wanted to sort out (for a server) lol
+  - Add option to set whether the bot will join the VC automatically if a message is sent on TTS channels
+  - Users won't receive a "need to be in a VC" message on TTS channels
+  - Users won't receive a "need to be in my same VC" message on TTS channels
+- Bot deafens self on join
+- More details in existing logging
+- Make all replies not ephemeral
+- Fix linting for development (on Windows)
+
 ## Requirements
 
 To self-host this bot you'll need the following:
 
-* [git](https://git-scm.com/)
-* [node.js](https://nodejs.org/en/) (Version 16.6.0 or higher)
-* ffmpeg
+- [git](https://git-scm.com/)
+- [node.js](https://nodejs.org/en/) (Version 16.6.0 or higher)
+- ffmpeg
 
 **ffmpeg** should be installed by default on Linux and MacOS, in case it isn't, install it with your package manager. For Windows users, head over to [ffmpeg's official website](https://www.ffmpeg.org/download.html#build-windows) to download the binary which will need to be added to your **\$PATH**. If you don't know how to add folders to your **\$PATH**, check out this [guide](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/).
 
@@ -95,16 +115,16 @@ Head over to [Discord Application Page](https://discord.com/developers/applicati
 by going into the `Bot` page and setting up your bot. Then, you should head over to the `OAuth2` page and select `OAuth2 URL Generator`. A box should show up
 with plenty of checkboxes, enable the `bot` and `application.commands` checkboxes. Then, another box should show up with more checkboxes, enable the following ones:
 
-* Send Messages
-* Read Message History
-* Connect
-* Speak
+- Send Messages
+- Read Message History
+- Connect
+- Speak
 
 At the bottom a link should show up, access this link to invite your bot. You should send this link to anyone that wishes to add your bot to their Discord server.
 
 ## Configuration
 
-Inside the `config` folder, rename the file *settings.json.example* to *settings.json* and edit the file with your own Discord Token and other settings. If you don't have a discord token yet, you can see a guide on how to create it [here](https://github.com/moonstar-x/discord-downtime-notifier/wiki).
+Inside the `config` folder, rename the file _settings.json.example_ to _settings.json_ and edit the file with your own Discord Token and other settings. If you don't have a discord token yet, you can see a guide on how to create it [here](https://github.com/moonstar-x/discord-downtime-notifier/wiki).
 
 Your file should look like this.
 
@@ -130,7 +150,7 @@ You may also configure these options with environment variables. The settings se
 This table contains all the configuration settings you may specify with both environment variables and the JSON config file.
 
 | Environment Variable               | JSON Property                | Required                    | Type                       | Description                                                                                                                                                                                                                                                                                                                                                                          |
-|------------------------------------|------------------------------|-----------------------------|----------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ---------------------------------- | ---------------------------- | --------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | DISCORD_TOKEN                      | `token`                      | Yes.                        | `string`                   | The bot's token.                                                                                                                                                                                                                                                                                                                                                                     |
 | DISCORD_PREFIX                     | `prefix`                     | No. (Defaults to: `$`)      | `string`                   | **Deprecated**: The bot's prefix. A prefix is no longer necessary because this bot uses the all new interactions (slash commands).                                                                                                                                                                                                                                                   |
 | DISCORD_OWNER_ID                   | `owner_id`                   | No. (Defaults to: `null`)   | `string` or `null`         | The ID of the bot's owner.                                                                                                                                                                                                                                                                                                                                                           |
@@ -164,8 +184,8 @@ Check [configuration](#configuration) to see which environment variables you can
 
 The following volumes can be used:
 
-* `/opt/app/config`: The config folder for the bot, here you can use the `settings.json` file to configure the bot if you don't want to use environment variables.
-* `/opt/app/data`: The data folder for the bot. If you use a `level` data provider you should set this volume to keep the bot's data persistent across restarts.
+- `/opt/app/config`: The config folder for the bot, here you can use the `settings.json` file to configure the bot if you don't want to use environment variables.
+- `/opt/app/data`: The data folder for the bot. If you use a `level` data provider you should set this volume to keep the bot's data persistent across restarts.
 
 ## Running on Repl.it
 
@@ -193,49 +213,52 @@ To deploy to Heroku, you can click on the image below and login to your account.
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/moonstar-x/discord-tts-bot)
 
-You can now go back to your app's *Overview*, make sure you disable the *web* dyno and enable the *bot* dyno. Your bot should now be up and running. Remember you can always check your bot's console if you access the *View Logs* in the *More* dropdown menu.
+You can now go back to your app's _Overview_, make sure you disable the _web_ dyno and enable the _bot_ dyno. Your bot should now be up and running. Remember you can always check your bot's console if you access the _View Logs_ in the _More_ dropdown menu.
 
 ## Usage
 
 Here's a list of all the commands for the bot:
 
-| Command                                   | Alias     | Description                                                                                         | Required Permissions |
-|-------------------------------------------|-----------|-----------------------------------------------------------------------------------------------------|----------------------|
-| /say \<message\>                          | /s        | Send a TTS message in your voice channel with your own settings or the ones saved for this server.  |                      |
-| /stop                                     | /leave    | Stop the TTS bot and leave the channel.                                                             |                      |
-| /default_settings                         |           | Get the default TTS settings currently set for the guild.                                           |                      |
-| /my_settings                              |           | Get the TTS settings you currently have set for yourself.                                           |                      |
-| /set_default_provider \<provider\>        |           | Sets the provider to be used by the say command for the server by default.                          | `MANAGE_GUILD`       |
-| /set_my_provider \<provider\>             |           | Sets the provider to be used by the say command for yourself.                                       |                      |
-| /set_locale \<locale\>                    |           | Sets locale to be used by the bot in this guild.                                                    | `MANAGE_GUILD`       |
-| /set_timeout \<timeout\>                  |           | Sets the timeout for the bot to leave the channel when not in use.                                  | `MANAGE_GUILD`       |
-| /google_langs                             |           | Display a list of the languages supported by the Google Translate provider.                         |                      |
-| /google_say \<message\>                   |           | Send a Google Translate TTS message with multi-language support in your voice channel.              |                      |
-| /google_set_default language \<language\> |           | Sets the language to be used by the say and google_say command by default.                          | `MANAGE_GUILD`       |
-| /google_set_default speed \<speed\>       |           | Sets the speed to be used by the say and google_say command by default.                             | `MANAGE_GUILD`       |
-| /google_set_my language \<language\>      |           | Sets the language to be used by the say and google_say command for yourself.                        |                      |
-| /google_set_my speed \<speed\>            |           | Sets the speed to be used by the say and google_say command for yourself.                           |                      |
-| /help                                     |           | Display a help message with all the available commands.                                             |                      |
-| /aeiou_say \<message\>                    |           | Send an aeiou (sounds like Stephen Hawking) TTS message in your voice channel.                      |                      |
+| Command                                   | Alias  | Description                                                                                        | Required Permissions |
+| ----------------------------------------- | ------ | -------------------------------------------------------------------------------------------------- | -------------------- |
+| /help                                     |        | Display a help message with all the available commands.                                            |                      |
+| /join                                     |        | Lets the bot join in your voice channel.                                                           |                      |
+| /say \<message\>                          | /s     | Send a TTS message in your voice channel with your own settings or the ones saved for this server. |                      |
+| /skip                                     |        | Skips the current TTS message being said and moves to the next one in queue.                       |                      |
+| /stop                                     | /leave | Stop the TTS bot and leave the channel.                                                            |                      |
+| /set_alias \<key\> (value)                |        | Set an alternative way for the TTS to say a word/phrase for the user.                              |                      |
+| /set_guild_alias \<key\> (value)          |        | Set an alternative way for the TTS to say a word/phrase for the guild.                             | `MANAGE_GUILD`       |
+| /default_settings                         |        | Get the default TTS settings currently set for the guild.                                          |                      |
+| /my_settings                              |        | Get the TTS settings you currently have set for yourself.                                          |                      |
+| /set_default_provider \<provider\>        |        | Sets the provider to be used by the say command for the server by default.                         | `MANAGE_GUILD`       |
+| /set_my_provider \<provider\>             |        | Sets the provider to be used by the say command for yourself.                                      |                      |
+| /set_locale \<locale\>                    |        | Sets locale to be used by the bot in this guild.                                                   | `MANAGE_GUILD`       |
+| /set_timeout \<timeout\>                  |        | Sets the timeout for the bot to leave the channel when not in use.                                 | `MANAGE_GUILD`       |
+| /google_langs                             |        | Display a list of the languages supported by the Google Translate provider.                        |                      |
+| /google_say \<message\>                   |        | Send a Google Translate TTS message with multi-language support in your voice channel.             |                      |
+| /google_set_default language \<language\> |        | Sets the language to be used by the say and google_say command by default.                         | `MANAGE_GUILD`       |
+| /google_set_default speed \<speed\>       |        | Sets the speed to be used by the say and google_say command by default.                            | `MANAGE_GUILD`       |
+| /google_set_my language \<language\>      |        | Sets the language to be used by the say and google_say command for yourself.                       |                      |
+| /google_set_my speed \<speed\>            |        | Sets the speed to be used by the say and google_say command for yourself.                          |                      |
+| /aeiou_say \<message\>                    |        | Send an aeiou (sounds like Stephen Hawking) TTS message in your voice channel.                     |                      |
 
 If you have `enable_tts_channels` set to `true`, you will have access to the additional commands:
 
-| Command                                   | Description                                                                      | Required Permissions |
-|-------------------------------------------|----------------------------------------------------------------------------------|----------------------|
-| /channel_settings                         | Get the TTS settings associated to this channel (if applies).                    |                      |
-| /delete_channel_provider                  | Disable message-only based TTS on this channel (deletes its saved settings).     | `MANAGE_CHANNELS`    |
-| /set_channel_provider \<provider\>        | Sets the provider to be used by the message-only based TTS on specific channels. | `MANAGE_CHANNELS`    |
-| /google_set_channel language \<language\> | Sets the language to be used by the say and google_say command by default.       | `MANAGE_CHANNELS`    |
-| /google_set_channel speed \<speed\>       | Sets the speed to be used by the say and google_say command by default.          | `MANAGE_CHANNELS`    | 
-
-> Up until now, these settings are saved in memory, which means if the bot crashes/restarts, all of these settings will go back to default (`Language: English, Speed: normal`).
+| Command                                   | Description                                                                             | Required Permissions |
+| ----------------------------------------- | --------------------------------------------------------------------------------------- | -------------------- |
+| /channel_settings                         | Get the TTS settings associated to this channel (if applies).                           |                      |
+| /delete_channel_provider                  | Disable message-only based TTS on this channel (deletes its saved settings).            | `MANAGE_CHANNELS`    |
+| /set_channel_provider \<provider\>        | Sets the provider to be used by the message-only based TTS on specific channels.        | `MANAGE_CHANNELS`    |
+| /set_join_on_message (state)              | Sets if the bot joins the VC automatically when a message is sent on specific channels. | `MANAGE_CHANNELS`    |
+| /google_set_channel language \<language\> | Sets the language to be used by the say and google_say command by default.              | `MANAGE_CHANNELS`    |
+| /google_set_channel speed \<speed\>       | Sets the speed to be used by the say and google_say command by default.                 | `MANAGE_CHANNELS`    |
 
 ## Language Support
 
 Here's a list of all the supported languages by the Google Translate provider:
 
 | Language Code | Language Name |
-|---------------|---------------|
+| ------------- | ------------- |
 | af            | Afrikaans     |
 | hy            | Armenian      |
 | id            | Indonesian    |
@@ -292,4 +315,4 @@ You can add this bot to your server by clicking the image below:
 
 ## Author
 
-This bot was made by [moonstar-x](https://github.com/moonstar-x).
+This bot was made by [moonstar-x](https://github.com/moonstar-x). Modified by [JovannMC](https://github.com/JovannMC)
