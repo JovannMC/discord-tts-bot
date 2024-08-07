@@ -22,7 +22,9 @@ const COMMAND = {
 
   'command.set.default.provider.success': 'You have successfully changed the default provider to **{name}**.',
 
+  'command.set.alias.notFound': 'The alias for **{key}** does not exist.',
   'command.set.alias.success': 'You have successfully set an alias for **{key}** to **{value}**.',
+  'command.set.alias.removed': 'You have successfully removed the alias for **{key}**.',
 
   'command.set.my.provider.success': 'You have successfully changed your provider to **{name}**.',
 

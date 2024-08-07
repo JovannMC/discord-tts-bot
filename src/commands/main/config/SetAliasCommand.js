@@ -1,3 +1,5 @@
+/* eslint-disable max-statements */
+
 const { SlashCommand } = require('@greencoast/discord.js-extended');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const logger = require('@greencoast/logger');
@@ -15,14 +17,14 @@ class SetAliasCommand extends SlashCommand {
         .addStringOption((input) => {
           return input
             .setName('key')
-            .setDescription('The word or phrase you want to set an alias for.')
+            .setDescription('The word or phrase you want to set (or remove) an alias for.')
             .setRequired(true);
         })
         .addStringOption((input) => {
           return input
             .setName('value')
             .setDescription('The alternative way you want the TTS to say the word or phrase.')
-            .setRequired(true);
+            .setRequired(false);
         })
     });
   }
@@ -33,12 +35,25 @@ class SetAliasCommand extends SlashCommand {
     const keyName = interaction.options.getString('key');
     const valueName = interaction.options.getString('value');
 
-    await this.client.ttsSettings.set(interaction.guild, {
-      aliases: {
-        [keyName]: valueName
-      }
-    });
-    logger.info(`Aliases for guild "${guildName}" (${guildId}): ${this.client.ttsSettings.get(interaction.guild).aliases}`);
+    const ttsSettings = await this.client.ttsSettings.get(interaction.guild);
+    const aliases = ttsSettings.aliases || {};
+
+    logger.info(`Aliases for guild "${guildName}" (${guildId}): ${JSON.stringify(aliases)}`);
+
+    if (!aliases[keyName]) {
+      logger.info(`Alias for "${keyName}" does not exist in guild "${guildName}" (${guildId}).`);
+      return interaction.reply({ content: localizer.t('command.set.alias.notFound', { key: keyName }) });
+    }
+
+    if (!valueName) {
+      logger.info(`Removed alias for "${keyName}" (was ${aliases[keyName]}) in guild "${guildName}" (${guildId}).`);
+      delete aliases[keyName];
+      await this.client.ttsSettings.set(interaction.guild, { aliases });
+      return interaction.reply({ content: localizer.t('command.set.alias.removed', { key: keyName }) });
+    }
+
+    aliases[keyName] = valueName;
+    await this.client.ttsSettings.set(interaction.guild, { aliases });
     logger.info(`"${guildName}" (${guildId}) has aliased "${keyName}" to "${valueName}".`);
     return interaction.reply({ content: localizer.t('command.set.alias.success', { key: keyName, value: valueName }) });
   }
