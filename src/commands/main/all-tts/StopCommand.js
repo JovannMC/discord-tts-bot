@@ -20,7 +20,7 @@ class StopCommand extends SlashCommand {
     const ttsPlayer = this.client.getTTSPlayer(interaction.guild);
     const connection = ttsPlayer.voice.getConnection();
 
-    const { me: { voice: myVoice }, name: guildName } = interaction.guild;
+    const { me: { voice: myVoice }, name: guildName, id: guildId } = interaction.guild;
     const myChannel = myVoice?.channel;
     const { channel: memberChannel } = interaction.member.voice;
 
@@ -33,7 +33,7 @@ class StopCommand extends SlashCommand {
     }
 
     ttsPlayer.stop();
-    logger.info(`Successfully left the voice channel ${myChannel.name} from guild ${guildName}.`);
+    logger.info(`Successfully left the voice channel "${myChannel.name}" (${myChannel.id}) from guild "${guildName}" (${guildId}).`);
     return interaction.reply({ content: localizer.t('command.stop.success', { channel: myChannel.toString() }) });
   }
 }

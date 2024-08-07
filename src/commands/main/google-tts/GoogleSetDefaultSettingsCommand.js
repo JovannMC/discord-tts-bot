@@ -41,6 +41,7 @@ class GoogleSetDefaultSettingsCommand extends SlashCommand {
   }
 
   async handleLanguage(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
     const language = interaction.options.getString('value');
     const languageInfo = languages[language];
 
@@ -50,16 +51,17 @@ class GoogleSetDefaultSettingsCommand extends SlashCommand {
 
     await this.client.ttsSettings.set(interaction.guild, { [GoogleProvider.NAME]: { language } });
 
-    logger.info(`${interaction.guild.name} has changed its default google language to ${language}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed its default Google language to "${language}".`);
     return interaction.reply({ content: localizer.t('command.google.settings.default.language.success', { language: languageInfo.name }) });
   }
 
   async handleSpeed(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
     const speed = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.guild, { [GoogleProvider.NAME]: { speed } });
 
-    logger.info(`${interaction.guild.name} has changed its default google google speed to ${speed}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed its default Google speed to "${speed}".`);
     return interaction.reply({ content: localizer.t('command.google.settings.default.speed.success', { speed }) });
   }
 
@@ -73,7 +75,7 @@ class GoogleSetDefaultSettingsCommand extends SlashCommand {
       case 'speed':
         return this.handleSpeed(interaction, localizer);
       default:
-        throw new Error(`Invalid subcommand ${subCommand} supplied to GoogleSetDefaultSettingsCommand.`);
+        throw new Error(`Invalid subcommand "${subCommand}" supplied to GoogleSetDefaultSettingsCommand.`);
     }
   }
 }

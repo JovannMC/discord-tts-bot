@@ -24,13 +24,16 @@ class SetChannelProvider extends SlashCommand {
   }
 
   async run(interaction) {
+    const { guild, channel } = interaction;
+    const { name: guildName, id: guildId } = guild;
+    const { name: channelName, id: channelId } = channel;
     const localizer = this.client.localizer.getLocalizer(interaction.guild);
     const providerName = interaction.options.getString('provider');
     const providerFriendlyName = ProviderManager.PROVIDER_FRIENDLY_NAMES[providerName];
 
     await this.client.ttsSettings.set(interaction.channel, { provider: providerName });
 
-    logger.info(`${interaction.guild.name} has changed the provider for the channel ${interaction.channel.name} to ${providerName}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed the provider for the channel "${channelName}" (${channelId}) to "${providerName}".`);
     return interaction.reply({ content: localizer.t('channel_commands.set.success', { name: providerFriendlyName }) });
   }
 }

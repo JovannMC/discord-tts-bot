@@ -13,6 +13,10 @@ class TTSChannelHandler {
   }
 
   async handleMessage(message) {
+    const { channel, member } = message;
+    const { name: channelName, id: channelId } = channel;
+    const { displayName: memberName, id: memberId } = member;
+
     try {
       if (message.author.bot || !message.guild || message.content?.length < 1) {
         return;
@@ -25,7 +29,7 @@ class TTSChannelHandler {
 
       return await this.handleSay(message, channelSettings);
     } catch (error) {
-      logger.error(`Something happened when handling the TTS channel ${message.channel.name} with message from ${message.member.displayName}`);
+      logger.error(`Something happened when handling the TTS channel "${channelName}" (${channelId}) with message from "${memberName}" (${memberId}).`);
       logger.error(error);
     }
   }
@@ -64,7 +68,7 @@ class TTSChannelHandler {
     }
   
     await ttsPlayer.voice.connect(memberChannel);
-    logger.info(`Joining ${memberChannel.name} (${memberChannel.id}) in ${guildName} (${guildId}).`);
+    logger.info(`Joining "${memberChannel.name}" (${memberChannel.id}) in "${guildName}" (${guildId}).`);
     await message.reply(localizer.t('command.say.joined', { channel: memberChannel.toString() }));
     return ttsPlayer.say(textToSay, channelSettings.provider, extras);
   }

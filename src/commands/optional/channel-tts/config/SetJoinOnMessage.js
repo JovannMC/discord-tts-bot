@@ -24,6 +24,7 @@ class SetJoinOnMessage extends SlashCommand {
 
   async run(interaction) {
     const { guild, channel } = interaction;
+    const { name: channelName, id: channelId } = channel;
     const { name: guildName, id: guildId } = guild;
     const localizer = this.client.localizer.getLocalizer(guild);
     const state = interaction.options.getString('state');
@@ -38,7 +39,7 @@ class SetJoinOnMessage extends SlashCommand {
 
     await this.client.ttsSettings.set(channel, { joinOnMessage: newState });
 
-    logger.info(`${guildName} (${guildId}) has ${newState ? 'enabled' : 'disabled'} the "join on message" option for ${channel.name} (${channel.id}).`);
+    logger.info(`"${guildName}" (${guildId}) has ${newState ? 'enabled' : 'disabled'} the "join on message" option for "${channelName}" (${channelId}).`);
     return interaction.reply({ content: localizer.t(`channel_commands.join.${newState ? 'enabled' : 'disabled'}`) });
   }
 }

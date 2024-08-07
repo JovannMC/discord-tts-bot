@@ -25,6 +25,7 @@ class SetTimeoutCommand extends SlashCommand {
   }
 
   async run(interaction) {
+    const { name: guildName, id: guildId } = interaction.guild;
     const localizer = this.client.localizer.getLocalizer(interaction.guild);
     const timeout = interaction.options.getNumber('timeout');
     const ttsPlayer = this.client.getTTSPlayer(interaction.guild);
@@ -32,7 +33,7 @@ class SetTimeoutCommand extends SlashCommand {
     if (timeout === 0) {
       const MAX_TIMEOUT = 2147483647; // Maximum for 32-bit signed integer
       await ttsPlayer.disconnectScheduler.updateTimeout(MAX_TIMEOUT);
-      logger.info(`${interaction.guild.name} has set its disconnect timeout to never.`);
+      logger.info(`"${guildName}" (${guildId}) has changed its disconnect timeout to "never".`);
       return interaction.reply({ content: localizer.t('command.timeout.never') });
     }
   
@@ -42,7 +43,7 @@ class SetTimeoutCommand extends SlashCommand {
   
     await ttsPlayer.disconnectScheduler.updateTimeout(timeout * 60 * 1000);
   
-    logger.info(`${interaction.guild.name} has changed its disconnect timeout to ${timeout} minutes.`);
+    logger.info(`"${guildName}" (${guildId}) has changed its disconnect timeout to "${timeout}" minutes.`);
     return interaction.reply({ content: localizer.t('command.timeout.success', { timeout }) });
   }
 }

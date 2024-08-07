@@ -23,13 +23,15 @@ class SetMyProviderCommand extends SlashCommand {
   }
 
   async run(interaction) {
+    const { name: guildName, id: guildId } = interaction.guild;
+    const { displayName: memberName, id: memberId } = interaction.member;
     const localizer = this.client.localizer.getLocalizer(interaction.guild);
     const providerName = interaction.options.getString('provider');
     const providerFriendlyName = ProviderManager.PROVIDER_FRIENDLY_NAMES[providerName];
 
     await this.client.ttsSettings.set(interaction.member, { provider: providerName });
 
-    logger.info(`User ${interaction.member.displayName} in ${interaction.guild.name} has changed their provider to ${providerName}.`);
+    logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their provider to "${providerName}".`);
     return interaction.reply({ content: localizer.t('command.set.my.provider.success', { name: providerFriendlyName }), ephemeral: true });
   }
 }

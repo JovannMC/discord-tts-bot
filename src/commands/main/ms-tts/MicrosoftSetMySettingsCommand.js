@@ -75,6 +75,8 @@ class MicrosoftSetMySettingsCommand extends SlashCommand {
   }
 
   async handleLanguage(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
+    const { displayName: memberName, id: memberId } = interaction.member;
     const language = interaction.options.getString('value');
     const languageInfo = languageData[language];
 
@@ -91,11 +93,13 @@ class MicrosoftSetMySettingsCommand extends SlashCommand {
       }
     });
 
-    logger.info(`User ${interaction.member.displayName} in ${interaction.guild.name} has changed their microsoft language to ${language} with voice ${defaultVoice.name}.`);
+    logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Microsoft language to "${language}" with voice "${defaultVoice.name}".`);
     return interaction.reply({ content: localizer.t('command.microsoft.settings.my.language.success', { language, voice: defaultVoice.name }), ephemeral: true });
   }
 
   async handleVoice(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
+    const { displayName: memberName, id: memberId } = interaction.member;
     const voice = interaction.options.getString('value').toLowerCase();
 
     const settings = await this.client.ttsSettings.getCurrent(interaction);
@@ -119,34 +123,40 @@ class MicrosoftSetMySettingsCommand extends SlashCommand {
       }
     });
 
-    logger.info(`User ${interaction.member.displayName} in ${interaction.guild.name} has changed their microsoft voice to ${voiceInfo.name}.`);
+    logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Microsoft voice to "${voiceInfo.name}".`);
     return interaction.reply({ content: localizer.t('command.microsoft.settings.my.voice.success', { voice: voiceInfo.name }), ephemeral: true });
   }
 
   async handleVolume(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
+    const { displayName: memberName, id: memberId } = interaction.member;
     const volume = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.member, { [MicrosoftProvider.NAME]: { volume } });
 
-    logger.info(`User ${interaction.member.displayName} in ${interaction.guild.name} has changed their microsoft volume to ${volume}.`);
+    logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Microsoft volume to "${volume}".`);
     return interaction.reply({ content: localizer.t('command.microsoft.settings.my.volume.success', { volume }), ephemeral: true });
   }
 
   async handleRate(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
+    const { displayName: memberName, id: memberId } = interaction.member;
     const rate = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.member, { [MicrosoftProvider.NAME]: { rate } });
 
-    logger.info(`User ${interaction.member.displayName} in ${interaction.guild.name} has changed their microsoft rate to ${rate}.`);
+    logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Microsoft rate to "${rate}".`);
     return interaction.reply({ content: localizer.t('command.microsoft.settings.my.rate.success', { rate }), ephemeral: true });
   }
 
   async handlePitch(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
+    const { displayName: memberName, id: memberId } = interaction.member;
     const pitch = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.member, { [MicrosoftProvider.NAME]: { pitch } });
 
-    logger.info(`User ${interaction.member.displayName} in ${interaction.guild.name} has changed their microsoft pitch to ${pitch}.`);
+    logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Microsoft pitch to "${pitch}".`);
     return interaction.reply({ content: localizer.t('command.microsoft.settings.my.pitch.success', { pitch }), ephemeral: true });
   }
 

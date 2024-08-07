@@ -37,7 +37,7 @@ class JoinCommand extends SlashCommand {
 
     if (!connection) {
       await ttsPlayer.voice.connect(memberChannel);
-      logger.info(`Joined ${memberChannel.name} (${memberChannel.id}) in ${guildName} (${guildId}).`);
+      logger.info(`Joined "${memberChannel.name}" (${memberChannel.id}) in "${guildName}" (${guildId}).`);
       await interaction.editReply(localizer.t('command.join.joined', { channel: memberChannel.toString() }));
     } else {
       await interaction.editReply(localizer.t('command.join.already_connected'));

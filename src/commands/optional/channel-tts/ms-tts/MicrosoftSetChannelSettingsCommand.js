@@ -76,6 +76,9 @@ class MicrosoftSetChannelSettingsCommand extends SlashCommand {
   }
 
   async handleLanguage(interaction, localizer) {
+    const { guild, channel } = interaction;
+    const { name: guildName, id: guildId } = guild;
+    const { name: channelName, id: channelId } = channel;
     const language = interaction.options.getString('value');
     const languageInfo = languageData[language];
 
@@ -92,11 +95,14 @@ class MicrosoftSetChannelSettingsCommand extends SlashCommand {
       }
     });
 
-    logger.info(`${interaction.guild.name} has changed the microsoft language for the channel ${interaction.channel.name} to ${language} with voice ${defaultVoice.name}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed the Microsoft language for the channel "${channelName}" (${channelId}) to "${language}" with voice "${defaultVoice.name}".`);
     return interaction.reply({ content: localizer.t('channel_commands.microsoft.settings.language.success', { language, voice: defaultVoice.name }) });
   }
 
   async handleVoice(interaction, localizer) {
+    const { guild, channel } = interaction;
+    const { name: guildName, id: guildId } = guild;
+    const { name: channelName, id: channelId } = channel;
     const voice = interaction.options.getString('value').toLowerCase();
 
     const settings = await this.client.ttsSettings.getCurrentForChannel(interaction.channel);
@@ -116,34 +122,43 @@ class MicrosoftSetChannelSettingsCommand extends SlashCommand {
       }
     });
 
-    logger.info(`${interaction.channel.name} has changed the microsoft voice for the channel ${interaction.channel.name} to ${voiceInfo.name}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed the Microsoft voice for the channel "${channelName}" (${channelId}) to "${voiceInfo.name}".`);
     return interaction.reply({ content: localizer.t('channel_commands.microsoft.settings.voice.success', { voice: voiceInfo.name }) });
   }
 
   async handleVolume(interaction, localizer) {
+    const { guild, channel } = interaction;
+    const { name: guildName, id: guildId } = guild;
+    const { name: channelName, id: channelId } = channel;
     const volume = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.channel, { [MicrosoftProvider.NAME]: { volume } });
 
-    logger.info(`${interaction.guild.name} has changed the microsoft volume for the channel ${interaction.channel.name} to ${volume}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed the Microsoft volume for the channel "${channelName}" (${channelId}) to "${volume}".`);
     return interaction.reply({ content: localizer.t('channel_commands.microsoft.settings.volume.success', { volume }) });
   }
 
   async handleRate(interaction, localizer) {
+    const { guild, channel } = interaction;
+    const { name: guildName, id: guildId } = guild;
+    const { name: channelName, id: channelId } = channel;
     const rate = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.channel, { [MicrosoftProvider.NAME]: { rate } });
 
-    logger.info(`${interaction.guild.name} has changed the microsoft rate for the channel ${interaction.channel.name} to ${rate}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed the Microsoft rate for the channel "${channelName}" (${channelId}) to "${rate}".`);
     return interaction.reply({ content: localizer.t('channel_commands.microsoft.settings.rate.success', { rate }) });
   }
 
   async handlePitch(interaction, localizer) {
+    const { guild, channel } = interaction;
+    const { name: guildName, id: guildId } = guild;
+    const { name: channelName, id: channelId } = channel;
     const pitch = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.channel, { [MicrosoftProvider.NAME]: { pitch } });
 
-    logger.info(`${interaction.guild.name} has changed the microsoft pitch for the channel ${interaction.channel.name} to ${pitch}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed the Microsoft pitch for the channel "${channelName}" (${channelId}) to "${pitch}".`);
     return interaction.reply({ content: localizer.t('channel_commands.microsoft.settings.pitch.success', { pitch }) });
   }
 
@@ -163,7 +178,7 @@ class MicrosoftSetChannelSettingsCommand extends SlashCommand {
       case 'pitch':
         return this.handlePitch(interaction, localizer);
       default:
-        throw new Error(`Invalid subcommand ${subCommand} supplied to MicrosoftSetChannelSettingsCommand.`);
+        throw new Error(`Invalid subcommand "${subCommand}" supplied to MicrosoftSetChannelSettingsCommand.`);
     }
   }
 }

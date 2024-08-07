@@ -24,13 +24,14 @@ class SetDefaultProviderCommand extends SlashCommand {
   }
 
   async run(interaction) {
+    const { name: guildName, id: guildId } = interaction.guild;
     const localizer = this.client.localizer.getLocalizer(interaction.guild);
     const providerName = interaction.options.getString('provider');
     const providerFriendlyName = ProviderManager.PROVIDER_FRIENDLY_NAMES[providerName];
 
     await this.client.ttsSettings.set(interaction.guild, { provider: providerName });
 
-    logger.info(`${interaction.guild.name} has changed its default provider to ${providerName}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed its default provider to "${providerName}".`);
     return interaction.reply({ content: localizer.t('command.set.default.provider.success', { name: providerFriendlyName }) });
   }
 }

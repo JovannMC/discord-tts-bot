@@ -75,6 +75,8 @@ class AmazonSetMySettingsCommand extends SlashCommand {
   }
 
   async handleLanguage(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
+    const { displayName: memberName, id: memberId } = interaction.member;
     const language = interaction.options.getString('value');
     const languageInfo = languageData[language];
 
@@ -91,11 +93,13 @@ class AmazonSetMySettingsCommand extends SlashCommand {
       }
     });
 
-    logger.info(`User ${interaction.member.displayName} in ${interaction.guild.name} has changed their amazon language to ${language} with voice ${defaultVoice.name}.`);
+    logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Amazon language to "${language}" with voice "${defaultVoice.name}".`);
     return interaction.reply({ content: localizer.t('command.amazon.settings.my.language.success', { language, voice: defaultVoice.name }), ephemeral: true });
   }
 
   async handleVoice(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
+    const { displayName: memberName, id: memberId } = interaction.member;
     const voice = interaction.options.getString('value').toLowerCase();
 
     const settings = await this.client.ttsSettings.getCurrent(interaction);
@@ -119,34 +123,40 @@ class AmazonSetMySettingsCommand extends SlashCommand {
       }
     });
 
-    logger.info(`User ${interaction.member.displayName} in ${interaction.guild.name} has changed their amazon voice to ${voiceInfo.name}.`);
+    logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Amazon voice to "${voiceInfo.name}".`);
     return interaction.reply({ content: localizer.t('command.amazon.settings.my.voice.success', { voice: voiceInfo.name }), ephemeral: true });
   }
 
   async handleVolume(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
+    const { displayName: memberName, id: memberId } = interaction.member;
     const volume = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.member, { [AmazonProvider.NAME]: { volume } });
 
-    logger.info(`User ${interaction.member.displayName} in ${interaction.guild.name} has changed their amazon volume to ${volume}.`);
+    logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Amazon volume to "${volume}".`);
     return interaction.reply({ content: localizer.t('command.amazon.settings.my.volume.success', { volume }), ephemeral: true });
   }
 
   async handleRate(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
+    const { displayName: memberName, id: memberId } = interaction.member;
     const rate = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.member, { [AmazonProvider.NAME]: { rate } });
 
-    logger.info(`User ${interaction.member.displayName} in ${interaction.guild.name} has changed their amazon rate to ${rate}.`);
+    logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Amazon rate to "${rate}".`);
     return interaction.reply({ content: localizer.t('command.amazon.settings.my.rate.success', { rate }), ephemeral: true });
   }
 
   async handlePitch(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
+    const { displayName: memberName, id: memberId } = interaction.member;
     const pitch = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.member, { [AmazonProvider.NAME]: { pitch } });
 
-    logger.info(`User ${interaction.member.displayName} in ${interaction.guild.name} has changed their amazon pitch to ${pitch}.`);
+    logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Amazon pitch to "${pitch}".`);
     return interaction.reply({ content: localizer.t('command.amazon.settings.my.pitch.success', { pitch }), ephemeral: true });
   }
 
@@ -166,7 +176,7 @@ class AmazonSetMySettingsCommand extends SlashCommand {
       case 'pitch':
         return this.handlePitch(interaction, localizer);
       default:
-        throw new Error(`Invalid subcommand ${subCommand} supplied to AmazonSetMySettingsCommand.`);
+        throw new Error(`Invalid subcommand "${subCommand}" supplied to AmazonSetMySettingsCommand.`);
     }
   }
 }

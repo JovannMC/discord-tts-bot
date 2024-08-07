@@ -40,7 +40,7 @@ class SkipCommand extends SlashCommand {
       return interaction.reply({ content: localizer.t('command.skip.nothing_to_skip') });
     }
 
-    logger.info(`Skipped in ${memberChannel.name} (${memberChannel.id}) in ${guildName} (${guildId}).`);
+    logger.info(`Skipped in "${memberChannel.name}" (${memberChannel.id}) in "${guildName}" (${guildId}).`);
     return interaction.reply({ content: localizer.t('command.skip.skipped', { channel: myChannel.toString() }) });
   }
 }

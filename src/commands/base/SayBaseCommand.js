@@ -38,7 +38,7 @@ class SayBaseCommand extends SlashCommand {
     const providerName = this.getProviderName(currentSettings);
     const extras = currentSettings[providerName];
 
-    const { me: { voice: myVoice }, name: guildName, members, channels, roles } = interaction.guild;
+    const { me: { voice: myVoice }, name: guildName, id: guildId, members, channels, roles } = interaction.guild;
     const { channel: memberChannel } = interaction.member.voice;
     const myChannel = myVoice?.channel;
 
@@ -71,7 +71,7 @@ class SayBaseCommand extends SlashCommand {
     }
 
     await ttsPlayer.voice.connect(memberChannel);
-    logger.info(`Joined ${memberChannel.name} in ${guildName}.`);
+    logger.info(`Joined "${memberChannel.name}" (${memberChannel.id}) in "${guildName}" (${guildId}).`);
     await interaction.editReply(localizer.t('command.say.joined', { channel: memberChannel.toString() }));
     return ttsPlayer.say(message, providerName, extras);
   }

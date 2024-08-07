@@ -76,6 +76,7 @@ class AmazonSetDefaultSettingsCommand extends SlashCommand {
   }
 
   async handleLanguage(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
     const language = interaction.options.getString('value');
     const languageInfo = languageData[language];
 
@@ -92,11 +93,12 @@ class AmazonSetDefaultSettingsCommand extends SlashCommand {
       }
     });
 
-    logger.info(`${interaction.guild.name} has changed its default amazon language to ${language} with voice ${defaultVoice.name}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed its default Amazon language to "${language}" with voice "${defaultVoice.name}".`);
     return interaction.reply({ content: localizer.t('command.amazon.settings.default.language.success', { language, voice: defaultVoice.name }) });
   }
 
   async handleVoice(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
     const voice = interaction.options.getString('value').toLowerCase();
 
     const settings = await this.client.ttsSettings.getCurrentForGuild(interaction.guild);
@@ -120,34 +122,37 @@ class AmazonSetDefaultSettingsCommand extends SlashCommand {
       }
     });
 
-    logger.info(`${interaction.guild.name} has changed its default amazon voice to ${voiceInfo.name}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed its default Amazon voice to "${voiceInfo.name}".`);
     return interaction.reply({ content: localizer.t('command.amazon.settings.default.voice.success', { voice: voiceInfo.name }) });
   }
 
   async handleVolume(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
     const volume = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.guild, { [AmazonProvider.NAME]: { volume } });
 
-    logger.info(`${interaction.guild.name} has changed its default amazon volume to ${volume}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed its default Amazon volume to "${volume}".`);
     return interaction.reply({ content: localizer.t('command.amazon.settings.default.volume.success', { volume }) });
   }
 
   async handleRate(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
     const rate = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.guild, { [AmazonProvider.NAME]: { rate } });
 
-    logger.info(`${interaction.guild.name} has changed its default amazon rate to ${rate}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed its default Amazon rate to "${rate}".`);
     return interaction.reply({ content: localizer.t('command.amazon.settings.default.rate.success', { rate }) });
   }
 
   async handlePitch(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
     const pitch = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.guild, { [AmazonProvider.NAME]: { pitch } });
 
-    logger.info(`${interaction.guild.name} has changed its default amazon pitch to ${pitch}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed its default Amazon pitch to "${pitch}".`);
     return interaction.reply({ content: localizer.t('command.amazon.settings.default.pitch.success', { pitch }) });
   }
 
@@ -167,7 +172,7 @@ class AmazonSetDefaultSettingsCommand extends SlashCommand {
       case 'pitch':
         return this.handlePitch(interaction, localizer);
       default:
-        throw new Error(`Invalid subcommand ${subCommand} supplied to AmazonSetDefaultSettingsCommand.`);
+        throw new Error(`Invalid subcommand "${subCommand}" supplied to AmazonSetDefaultSettingsCommand.`);
     }
   }
 }

@@ -24,13 +24,14 @@ class SetLocaleCommand extends SlashCommand {
   }
 
   async run(interaction) {
+    const { name: guildName, id: guildId } = interaction.guild;
     const localizer = this.client.localizer.getLocalizer(interaction.guild);
     const locale = interaction.options.getString('locale');
     const localeFriendlyName = supported[locale];
 
     await localizer.updateLocale(locale);
 
-    logger.info(`${interaction.guild.name} has changed its locale to ${locale}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed its locale to "${locale}".`);
     return interaction.reply({ content: localizer.t('command.locale.success', { locale: localeFriendlyName }) });
   }
 }

@@ -76,6 +76,9 @@ class AmazonSetChannelSettingsCommand extends SlashCommand {
   }
 
   async handleLanguage(interaction, localizer) {
+    const { guild, channel } = interaction;
+    const { name: guildName, id: guildId } = guild;
+    const { name: channelName, id: channelId } = channel;
     const language = interaction.options.getString('value');
     const languageInfo = languageData[language];
 
@@ -92,11 +95,14 @@ class AmazonSetChannelSettingsCommand extends SlashCommand {
       }
     });
 
-    logger.info(`${interaction.guild.name} has changed the amazon language for the channel ${interaction.channel.name} to ${language} with voice ${defaultVoice.name}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed the Amazon language for the channel "${channelName}" (${channelId}) to "${language}" with voice "${defaultVoice.name}".`);
     return interaction.reply({ content: localizer.t('channel_commands.amazon.settings.language.success', { language, voice: defaultVoice.name }) });
   }
 
   async handleVoice(interaction, localizer) {
+    const { guild, channel } = interaction;
+    const { name: guildName, id: guildId } = guild;
+    const { name: channelName, id: channelId } = channel;
     const voice = interaction.options.getString('value').toLowerCase();
 
     const settings = await this.client.ttsSettings.getCurrentForChannel(interaction.channel);
@@ -116,34 +122,43 @@ class AmazonSetChannelSettingsCommand extends SlashCommand {
       }
     });
 
-    logger.info(`${interaction.channel.name} has changed the amazon voice for the channel ${interaction.channel.name} to ${voiceInfo.name}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed the Amazon voice for the channel "${channelName}" (${channelId}) to "${voiceInfo.name}".`);
     return interaction.reply({ content: localizer.t('channel_commands.amazon.settings.voice.success', { voice: voiceInfo.name }) });
   }
 
   async handleVolume(interaction, localizer) {
+    const { guild, channel } = interaction;
+    const { name: guildName, id: guildId } = guild;
+    const { name: channelName, id: channelId } = channel;
     const volume = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.channel, { [AmazonProvider.NAME]: { volume } });
 
-    logger.info(`${interaction.guild.name} has changed the amazon volume for the channel ${interaction.channel.name} to ${volume}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed the Amazon volume for the channel "${channelName}" (${channelId}) to "${volume}".`);
     return interaction.reply({ content: localizer.t('channel_commands.amazon.settings.volume.success', { volume }) });
   }
 
   async handleRate(interaction, localizer) {
+    const { guild, channel } = interaction;
+    const { name: guildName, id: guildId } = guild;
+    const { name: channelName, id: channelId } = channel;
     const rate = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.channel, { [AmazonProvider.NAME]: { rate } });
 
-    logger.info(`${interaction.guild.name} has changed the amazon rate for the channel ${interaction.channel.name} to ${rate}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed the Amazon rate for the channel "${channelName}" (${channelId}) to "${rate}".`);
     return interaction.reply({ content: localizer.t('channel_commands.amazon.settings.rate.success', { rate }) });
   }
 
   async handlePitch(interaction, localizer) {
+    const { guild, channel } = interaction;
+    const { name: guildName, id: guildId } = guild;
+    const { name: channelName, id: channelId } = channel;
     const pitch = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.channel, { [AmazonProvider.NAME]: { pitch } });
 
-    logger.info(`${interaction.guild.name} has changed the amazon pitch for the channel ${interaction.channel.name} to ${pitch}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed the Amazon pitch for the channel "${channelName}" (${channelId}) to "${pitch}".`);
     return interaction.reply({ content: localizer.t('channel_commands.amazon.settings.pitch.success', { pitch }) });
   }
 
@@ -163,7 +178,7 @@ class AmazonSetChannelSettingsCommand extends SlashCommand {
       case 'pitch':
         return this.handlePitch(interaction, localizer);
       default:
-        throw new Error(`Invalid subcommand ${subCommand} supplied to AmazonSetChannelSettingsCommand.`);
+        throw new Error(`Invalid subcommand "${subCommand}" supplied to AmazonSetChannelSettingsCommand.`);
     }
   }
 }

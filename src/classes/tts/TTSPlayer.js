@@ -36,7 +36,7 @@ class TTSPlayer {
   initializeScheduler() {
     this.disconnectScheduler.set(() => {
       const channel = this.stop();
-      logger.warn(`Left ${channel.name} from ${this.guild.name} due to inactivity.`);
+      logger.warn(`Left "${channel.name}" (${channel.id}) from "${this.guild.name}" (${this.guild.id}) due to inactivity.`);
     });
   }
 
@@ -98,7 +98,7 @@ class TTSPlayer {
     this.voice.disconnect();
     this.voice.player.stop(true);
 
-    return channel || { name: 'null' };
+    return channel || { name: 'null', id: 'null' };
   }
 
   startDisconnectScheduler() {

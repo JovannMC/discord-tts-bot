@@ -41,6 +41,9 @@ class GoogleSetChannelSettingsCommand extends SlashCommand {
   }
 
   async handleLanguage(interaction, localizer) {
+    const { guild, channel } = interaction;
+    const { name: guildName, id: guildId } = guild;
+    const { name: channelName, id: channelId } = channel;
     const language = interaction.options.getString('value');
     const languageInfo = languages[language];
 
@@ -50,16 +53,19 @@ class GoogleSetChannelSettingsCommand extends SlashCommand {
 
     await this.client.ttsSettings.set(interaction.channel, { [GoogleProvider.NAME]: { language } });
 
-    logger.info(`${interaction.guild.name} has changed the google language for the channel ${interaction.channel.name} to ${language}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed the Google language for the channel "${channelName}" (${channelId}) to "${language}".`);
     return interaction.reply({ content: localizer.t('channel_commands.google.settings.language.success', { language: languageInfo.name }) });
   }
 
   async handleSpeed(interaction, localizer) {
+    const { guild, channel } = interaction;
+    const { name: guildName, id: guildId } = guild;
+    const { name: channelName, id: channelId } = channel;
     const speed = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.channel, { [GoogleProvider.NAME]: { speed } });
 
-    logger.info(`${interaction.guild.name} has changed the google speed for the channel ${interaction.channel.name} to ${speed}.`);
+    logger.info(`"${guildName}" (${guildId}) has changed the Google speed for the channel "${channelName}" (${channelId}) to "${speed}".`);
     return interaction.reply({ content: localizer.t('channel_commands.google.settings.speed.success', { speed }) });
   }
 
@@ -73,7 +79,7 @@ class GoogleSetChannelSettingsCommand extends SlashCommand {
       case 'speed':
         return this.handleSpeed(interaction, localizer);
       default:
-        throw new Error(`Invalid subcommand ${subCommand} supplied to GoogleSetChannelSettingsCommand.`);
+        throw new Error(`Invalid subcommand "${subCommand}" supplied to GoogleSetChannelSettingsCommand.`);
     }
   }
 }

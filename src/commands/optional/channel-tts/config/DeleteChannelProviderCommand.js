@@ -16,6 +16,9 @@ class DeleteChannelProviderCommand extends SlashCommand {
   }
 
   async run(interaction) {
+    const { guild, channel } = interaction;
+    const { name: guildName, id: guildId } = guild;
+    const { name: channelName, id: channelId } = channel;
     const localizer = this.client.localizer.getLocalizer(interaction.guild);
     const channelSettings = await this.client.ttsSettings.get(interaction.channel);
 
@@ -24,7 +27,7 @@ class DeleteChannelProviderCommand extends SlashCommand {
     }
 
     await this.client.ttsSettings.delete(interaction.channel);
-    logger.info(`${interaction.guild.name} has disabled message-only TTS for the channel ${interaction.channel.name}`);
+    logger.info(`"${guildName}" (${guildId}) has disabled message-only TTS for the channel "${channelName}" (${channelId})`);
     return interaction.reply({ content: localizer.t('channel_commands.delete.success') });
   }
 }

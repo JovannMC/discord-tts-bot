@@ -40,6 +40,8 @@ class GoogleSetMySettingsCommand extends SlashCommand {
   }
 
   async handleLanguage(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
+    const { displayName: memberName, id: memberId } = interaction.member;
     const language = interaction.options.getString('value');
     const languageInfo = languages[language];
 
@@ -49,16 +51,18 @@ class GoogleSetMySettingsCommand extends SlashCommand {
 
     await this.client.ttsSettings.set(interaction.member, { [GoogleProvider.NAME]: { language } });
 
-    logger.info(`User ${interaction.member.displayName} in ${interaction.guild.name} has changed their google language to ${language}.`);
+    logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Google language to "${language}".`);
     return interaction.reply({ content: localizer.t('command.google.settings.my.language.success', { language: languageInfo.name }), ephemeral: true });
   }
 
   async handleSpeed(interaction, localizer) {
+    const { name: guildName, id: guildId } = interaction.guild;
+    const { displayName: memberName, id: memberId } = interaction.member;
     const speed = interaction.options.getString('value');
 
     await this.client.ttsSettings.set(interaction.member, { [GoogleProvider.NAME]: { speed } });
 
-    logger.info(`User ${interaction.member.displayName} in ${interaction.guild.name} has changed their google speed to ${speed}.`);
+    logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Google speed to "${speed}".`);
     return interaction.reply({ content: localizer.t('command.google.settings.my.speed.success', { speed }), ephemeral: true });
   }
 
@@ -72,7 +76,7 @@ class GoogleSetMySettingsCommand extends SlashCommand {
       case 'speed':
         return this.handleSpeed(interaction, localizer);
       default:
-        throw new Error(`Invalid subcommand ${subCommand} supplied to GoogleSetMySettingsCommand.`);
+        throw new Error(`Invalid subcommand "${subCommand}" supplied to GoogleSetMySettingsCommand.`);
     }
   }
 }
