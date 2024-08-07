@@ -38,8 +38,6 @@ class SetAliasCommand extends SlashCommand {
     const ttsSettings = await this.client.ttsSettings.get(interaction.guild);
     const aliases = ttsSettings.aliases || {};
 
-    logger.info(`Aliases for guild "${guildName}" (${guildId}): ${JSON.stringify(aliases)}`);
-
     if (!aliases[keyName]) {
       logger.info(`Alias for "${keyName}" does not exist in guild "${guildName}" (${guildId}).`);
       return interaction.reply({ content: localizer.t('command.set.alias.notFound', { key: keyName }) });
@@ -55,6 +53,7 @@ class SetAliasCommand extends SlashCommand {
     aliases[keyName] = valueName;
     await this.client.ttsSettings.set(interaction.guild, { aliases });
     logger.info(`"${guildName}" (${guildId}) has aliased "${keyName}" to "${valueName}".`);
+    logger.info(`Aliases for guild "${guildName}" (${guildId}): ${JSON.stringify(aliases)}`);
     return interaction.reply({ content: localizer.t('command.set.alias.success', { key: keyName, value: valueName }) });
   }
 }

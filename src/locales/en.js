@@ -14,6 +14,7 @@ const COMMAND = {
   'command.settings.default.embed.title': "Here's the current default settings for this guild",
   'command.settings.default.embed.description': 'Keep in mind that these settings do not reflect what your personal may be. These settings will be used if you have not set your own.',
   'command.settings.default.current.provider': 'Current provider',
+  'command.settings.default.aliases.title': 'Aliases',
 
   'command.settings.my.no_settings': 'No settings associated to this provider.',
   'command.settings.my.embed.title': "Here's your current settings, {name}",
