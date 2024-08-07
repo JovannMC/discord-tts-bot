@@ -15,7 +15,9 @@ class StopCommand extends SlashCommand {
     });
   }
 
-  run(interaction) {
+  async run(interaction) {
+    await interaction.deferReply();
+
     const localizer = this.client.localizer.getLocalizer(interaction.guild);
     const ttsPlayer = this.client.getTTSPlayer(interaction.guild);
     const connection = ttsPlayer.voice.getConnection();
@@ -25,16 +27,16 @@ class StopCommand extends SlashCommand {
     const { channel: memberChannel } = interaction.member.voice;
 
     if (!connection) {
-      return interaction.reply({ content: localizer.t('command.stop.no_connection') });
+      return interaction.editReply({ content: localizer.t('command.stop.no_connection') });
     }
 
     if (!memberChannel || myChannel !== memberChannel) {
-      return interaction.reply({ content: localizer.t('command.stop.different_channel') });
+      return interaction.editReply({ content: localizer.t('command.stop.different_channel') });
     }
 
     ttsPlayer.stop();
     logger.info(`Successfully left the voice channel "${myChannel.name}" (${myChannel.id}) from guild "${guildName}" (${guildId}).`);
-    return interaction.reply({ content: localizer.t('command.stop.success', { channel: myChannel.toString() }) });
+    return interaction.editReply({ content: localizer.t('command.stop.success', { channel: myChannel.toString() }) });
   }
 }
 

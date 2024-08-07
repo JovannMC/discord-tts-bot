@@ -1,3 +1,5 @@
+/* eslint-disable max-statements */
+
 const logger = require('@greencoast/logger');
 const { createAudioResource } = require('@discordjs/voice');
 const Queue = require('../Queue');
@@ -41,12 +43,29 @@ class TTSPlayer {
   }
 
   async say(sentence, providerName, extras = {}) {
-    const provider = this.providerManager.getProvider(providerName);
-    const payload = await provider.createPayload(sentence, extras);
+    const settings = await this.client.ttsSettings.get(this.guild);
+    const { aliases } = settings;
+    let finalSentence = sentence;
 
+    for (const [key, value] of Object.entries(aliases)) {
+      if (!sentence.includes(key)) {
+        continue;
+      }
+      
+      finalSentence = sentence.replace(new RegExp(key, 'g'), value);
+      logger.info(`Replaced "${key}" with "${value}" in the sentence "${sentence}".`);
+      logger.info(`Final sentence: "${finalSentence}".`);
+    }
+
+    const provider = this.providerManager.getProvider(providerName);
+    const payload = await provider.createPayload(finalSentence, extras);
     if (Array.isArray(payload)) {
-      payload.forEach((p) => this.queue.enqueue(p));
+      payload.forEach((p) => {
+        p.sentence = finalSentence;
+        this.queue.enqueue(p);
+      });
     } else {
+      payload.sentence = finalSentence;
       this.queue.enqueue(payload);
     }
 

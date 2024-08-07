@@ -14,22 +14,20 @@ class TTSChannelHandler {
 
   async handleMessage(message) {
     const { channel, member } = message;
-    const { name: channelName, id: channelId } = channel;
-    const { displayName: memberName, id: memberId } = member;
-
+    
     try {
       if (message.author.bot || !message.guild || message.content?.length < 1) {
         return;
       }
 
-      const channelSettings = await this.client.ttsSettings.get(message.channel);
+      const channelSettings = await this.client.ttsSettings.get(channel);
       if (!channelSettings || !channelSettings.provider) {
         return;
       }
 
       return await this.handleSay(message, channelSettings);
     } catch (error) {
-      logger.error(`Something happened when handling the TTS channel "${channelName}" (${channelId}) with message from "${memberName}" (${memberId}).`);
+      logger.error(`Something happened when handling the TTS channel "${channel.name}" (${channel.id}) with message from "${member.displayName}" (${member.id}).`);
       logger.error(error);
     }
   }

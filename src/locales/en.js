@@ -22,6 +22,8 @@ const COMMAND = {
 
   'command.set.default.provider.success': 'You have successfully changed the default provider to **{name}**.',
 
+  'command.set.alias.success': 'You have successfully set an alias for **{key}** to **{value}**.',
+
   'command.set.my.provider.success': 'You have successfully changed your provider to **{name}**.',
 
   'command.say.no_channel': 'You need to be in a voice channel first.',
