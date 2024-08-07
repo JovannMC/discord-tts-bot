@@ -57,7 +57,7 @@ class TTSChannelHandler {
     }
   
     if (connection) {
-      return ttsPlayer.say(textToSay, channelSettings.provider, extras);
+      return ttsPlayer.say(textToSay, message.member, channelSettings.provider, extras);
     }
   
     const cantConnectReason = getCantConnectToChannelReason(memberChannel);
@@ -68,7 +68,7 @@ class TTSChannelHandler {
     await ttsPlayer.voice.connect(memberChannel);
     logger.info(`Joining "${memberChannel.name}" (${memberChannel.id}) in "${guildName}" (${guildId}).`);
     await message.reply(localizer.t('command.say.joined', { channel: memberChannel.toString() }));
-    return ttsPlayer.say(textToSay, channelSettings.provider, extras);
+    return ttsPlayer.say(textToSay, message.member, channelSettings.provider, extras);
   }
 }
 

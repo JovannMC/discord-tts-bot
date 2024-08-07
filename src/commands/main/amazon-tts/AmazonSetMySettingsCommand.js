@@ -81,7 +81,7 @@ class AmazonSetMySettingsCommand extends SlashCommand {
     const languageInfo = languageData[language];
 
     if (!languageInfo) {
-      return interaction.reply({ content: localizer.t('command.amazon.settings.my.language.unsupported', { language }), ephemeral: true });
+      return interaction.reply({ content: localizer.t('command.amazon.settings.my.language.unsupported', { language }) });
     }
 
     const [defaultVoice] = languageInfo.voices;
@@ -94,7 +94,7 @@ class AmazonSetMySettingsCommand extends SlashCommand {
     });
 
     logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Amazon language to "${language}" with voice "${defaultVoice.name}".`);
-    return interaction.reply({ content: localizer.t('command.amazon.settings.my.language.success', { language, voice: defaultVoice.name }), ephemeral: true });
+    return interaction.reply({ content: localizer.t('command.amazon.settings.my.language.success', { language, voice: defaultVoice.name }) });
   }
 
   async handleVoice(interaction, localizer) {
@@ -107,13 +107,13 @@ class AmazonSetMySettingsCommand extends SlashCommand {
     const languageInfo = languageData[language];
 
     if (!languageInfo) {
-      return interaction.reply({ content: localizer.t('command.amazon.settings.my.voice.invalidated'), ephemeral: true });
+      return interaction.reply({ content: localizer.t('command.amazon.settings.my.voice.invalidated')});
     }
 
     const voiceInfo = languageInfo.voices.find((v) => v.name.toLowerCase() === voice);
 
     if (!voiceInfo) {
-      return interaction.reply({ content: localizer.t('command.amazon.settings.my.voice.unsupported', { voice }), ephemeral: true });
+      return interaction.reply({ content: localizer.t('command.amazon.settings.my.voice.unsupported', { voice }) });
     }
 
     await this.client.ttsSettings.set(interaction.member, {
@@ -124,7 +124,7 @@ class AmazonSetMySettingsCommand extends SlashCommand {
     });
 
     logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Amazon voice to "${voiceInfo.name}".`);
-    return interaction.reply({ content: localizer.t('command.amazon.settings.my.voice.success', { voice: voiceInfo.name }), ephemeral: true });
+    return interaction.reply({ content: localizer.t('command.amazon.settings.my.voice.success', { voice: voiceInfo.name }) });
   }
 
   async handleVolume(interaction, localizer) {
@@ -135,7 +135,7 @@ class AmazonSetMySettingsCommand extends SlashCommand {
     await this.client.ttsSettings.set(interaction.member, { [AmazonProvider.NAME]: { volume } });
 
     logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Amazon volume to "${volume}".`);
-    return interaction.reply({ content: localizer.t('command.amazon.settings.my.volume.success', { volume }), ephemeral: true });
+    return interaction.reply({ content: localizer.t('command.amazon.settings.my.volume.success', { volume }) });
   }
 
   async handleRate(interaction, localizer) {
@@ -146,7 +146,7 @@ class AmazonSetMySettingsCommand extends SlashCommand {
     await this.client.ttsSettings.set(interaction.member, { [AmazonProvider.NAME]: { rate } });
 
     logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Amazon rate to "${rate}".`);
-    return interaction.reply({ content: localizer.t('command.amazon.settings.my.rate.success', { rate }), ephemeral: true });
+    return interaction.reply({ content: localizer.t('command.amazon.settings.my.rate.success', { rate }) });
   }
 
   async handlePitch(interaction, localizer) {
@@ -157,7 +157,7 @@ class AmazonSetMySettingsCommand extends SlashCommand {
     await this.client.ttsSettings.set(interaction.member, { [AmazonProvider.NAME]: { pitch } });
 
     logger.info(`User "${memberName}" (${memberId}) in "${guildName}" (${guildId}) has changed their Amazon pitch to "${pitch}".`);
-    return interaction.reply({ content: localizer.t('command.amazon.settings.my.pitch.success', { pitch }), ephemeral: true });
+    return interaction.reply({ content: localizer.t('command.amazon.settings.my.pitch.success', { pitch }) });
   }
 
   async run(interaction) {
