@@ -69,6 +69,22 @@ class TTSPlayer {
       logger.info(`Replaced "${key}" with "${value}" in the sentence "${sentence}". Found in guild aliases.`);
       logger.info(`Final sentence: "${finalSentence}".`);
     }
+
+    // If the sentence contains a link
+    if (/(https?:\/\/[^\s]+)/g.test(finalSentence)) {
+      const originalSentence = finalSentence;
+      finalSentence = finalSentence.replace(/(https?:\/\/[^\s]+)/g, 'A link');
+      logger.info(`Replaced link in the sentence "${originalSentence}".`);
+      logger.info(`Final sentence: "${finalSentence}".`);
+    }
+
+    // If the sentence contains a codeblock or inline code
+    if (/(```[^\n]+```|`[^`]+`)/g.test(finalSentence)) {
+      const originalSentence = finalSentence;
+      finalSentence = finalSentence.replace(/(```[^\n]+```|`[^`]+`)/g, 'codeblock');
+      logger.info(`Replaced codeblock in the sentence "${originalSentence}".`);
+      logger.info(`Final sentence: "${finalSentence}".`);
+    }
   
     const provider = this.providerManager.getProvider(providerName);
     const payload = await provider.createPayload(finalSentence, extras);
@@ -89,7 +105,7 @@ class TTSPlayer {
     }
   }
 
-  async play() {
+  play() {
     if (this.queue.isEmpty()) {
       return;
     }
@@ -111,12 +127,20 @@ class TTSPlayer {
     if (this.queue.isEmpty() && !this.speaking) {
       return false;
     }
-
+  
+    const currentPayload = this.queue.store[0];
+  
+    // Check every payload in queue, and if the payload.sentence matches the currentPayload.sentence, skip it as well
+    this.queue.store = this.queue.store.filter((payload) => payload.sentence !== currentPayload.sentence);
+  
     this.stopDisconnectScheduler();
     this.speaking = false;
     this.voice.player.stop(true);
-    
-    this.play();
+  
+    if (!this.queue.isEmpty()) {
+      this.play();
+    }
+  
     return true;
   }
 
