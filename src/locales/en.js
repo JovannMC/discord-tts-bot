@@ -20,7 +20,7 @@ const COMMAND = {
   'command.settings.my.embed.title': "Here's your current settings, {name}",
   'command.settings.my.embed.description': "Keep in mind that if you haven't set a setting yet you may see the default ones here.",
   'command.settings.my.current.provider': 'Current provider',
-  'command.settings.my.user.aliases': 'User aliases',
+  'command.settings.my.aliases.title': 'User aliases',
 
   'command.set.default.provider.success': 'You have successfully changed the default provider to **{name}**.',
 

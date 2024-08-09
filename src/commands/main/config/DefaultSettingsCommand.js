@@ -34,7 +34,7 @@ class DefaultSettingsCommand extends SlashCommand {
       return { title: friendlyName, text };
     });
   
-    if (settings.aliases) {
+    if (settings.aliases && Object.keys(settings.aliases).length > 0) {
       const aliasKeys = Object.keys(settings.aliases);
       const aliasText = aliasKeys.reduce((text, key) => {
         const alias = settings.aliases[key];
@@ -42,6 +42,8 @@ class DefaultSettingsCommand extends SlashCommand {
       }, '');
   
       fields.push({ title: localizer.t('command.settings.default.aliases.title'), text: aliasText });
+    } else {
+      fields.push({ title: localizer.t('command.settings.default.aliases.title'), text: localizer.t('command.settings.default.no_settings') });
     }
   
     return fields;
@@ -51,19 +53,19 @@ class DefaultSettingsCommand extends SlashCommand {
     const localizer = this.client.localizer.getLocalizer(interaction.guild);
     const currentSettings = await this.client.ttsSettings.getCurrentForGuild(interaction.guild);
     const { provider, ...restSettings } = currentSettings;
-  
+
     const fields = this.prepareFields(restSettings, localizer);
     const embed = new MessageEmbed()
       .setTitle(localizer.t('command.settings.default.embed.title'))
       .setColor(MESSAGE_EMBED.color)
       .setDescription(localizer.t('command.settings.default.embed.description'))
       .addField(localizer.t('command.settings.default.current.provider'), ProviderManager.PROVIDER_FRIENDLY_NAMES[provider]);
-  
+
     for (const key in fields) {
       const field = fields[key];
       embed.addField(field.title, field.text, true);
     }
-  
+
     return interaction.reply({ embeds: [embed] });
   }
 }
