@@ -48,44 +48,52 @@ class TTSPlayer {
     const guildSettings = await this.client.ttsSettings.get(this.guild);
     const userAliases = userSettings.aliases || {};
     const guildAliases = guildSettings.aliases || {};
+    const originalSentence = sentence;
     let finalSentence = sentence;
   
     for (const [key, value] of Object.entries(userAliases)) {
-      if (!sentence.includes(key)) {
+      const regex = new RegExp(`\\b${key}\\b`, 'gi');
+      if (!regex.test(sentence)) {
         continue;
       }
       
-      finalSentence = finalSentence.replace(new RegExp(key, 'g'), value);
+      finalSentence = finalSentence.replace(regex, value);
       logger.info(`Replaced "${key}" with "${value}" in the sentence "${sentence}". Found in user aliases.`);
-      logger.info(`Final sentence: "${finalSentence}".`);
     }
-  
+    
     for (const [key, value] of Object.entries(guildAliases)) {
-      if (!sentence.includes(key)) {
+      const regex = new RegExp(`\\b${key}\\b`, 'gi');
+      if (!regex.test(sentence)) {
         continue;
       }
       
-      finalSentence = finalSentence.replace(new RegExp(key, 'g'), value);
+      finalSentence = finalSentence.replace(regex, value);
       logger.info(`Replaced "${key}" with "${value}" in the sentence "${sentence}". Found in guild aliases.`);
-      logger.info(`Final sentence: "${finalSentence}".`);
     }
 
     // If the sentence contains a link
     if (/(https?:\/\/[^\s]+)/g.test(finalSentence)) {
-      const originalSentence = finalSentence;
       finalSentence = finalSentence.replace(/(https?:\/\/[^\s]+)/g, 'A link');
       logger.info(`Replaced link in the sentence "${originalSentence}".`);
-      logger.info(`Final sentence: "${finalSentence}".`);
     }
 
-    // If the sentence contains a codeblock or inline code
-    if (/(```[^\n]+```|`[^`]+`)/g.test(finalSentence)) {
-      const originalSentence = finalSentence;
-      finalSentence = finalSentence.replace(/(```[^\n]+```|`[^`]+`)/g, 'codeblock');
+    // If the sentence contains a multiline or single line codeblock
+    if (/(```[\s\S]+?```|`[^`]+`)/g.test(finalSentence)) {
+      finalSentence = finalSentence.replace(/(```[\s\S]+?```|`[^`]+`)/g, 'codeblock');
       logger.info(`Replaced codeblock in the sentence "${originalSentence}".`);
-      logger.info(`Final sentence: "${finalSentence}".`);
     }
-  
+
+    // If the sentence has 3 or more punctuation marks in a row or if it has 3 or more repeating characters
+    if (/([^\w\s]{3,})/g.test(finalSentence)) {
+      finalSentence = finalSentence.replace(/([^\w\s]{3,})/g, '.');
+      logger.info(`Replaced 3 or more punctuation marks in the sentence "${originalSentence}".`);
+    } else if (/(\w)\1{2,}/g.test(finalSentence)) {
+      finalSentence = finalSentence.replace(/(\w)\1{2,}/g, '$1$1');
+      logger.info(`Replaced 3 or more repeating characters in the sentence "${originalSentence}".`);
+    }
+
+    logger.info(`Final sentence passed to TTS provider: "${finalSentence}".`);
+
     const provider = this.providerManager.getProvider(providerName);
     const payload = await provider.createPayload(finalSentence, extras);
     if (Array.isArray(payload)) {
