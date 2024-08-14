@@ -73,13 +73,21 @@ class TTSPlayer {
 
     // If the sentence contains a link
     if (/(https?:\/\/[^\s]+)/g.test(finalSentence)) {
-      finalSentence = finalSentence.replace(/(https?:\/\/[^\s]+)/g, 'A link');
+      if (/^(https?:\/\/[^\s]+)$/.test(finalSentence)) {
+        finalSentence = finalSentence.replace(/(https?:\/\/[^\s]+)/g, 'A link');
+      } else {
+        finalSentence = finalSentence.replace(/(https?:\/\/[^\s]+)/g, '. A link.');
+      }
       logger.info(`Replaced link in the sentence "${originalSentence}".`);
     }
 
     // If the sentence contains a multiline or single line codeblock
     if (/(```[\s\S]+?```|`[^`]+`)/g.test(finalSentence)) {
-      finalSentence = finalSentence.replace(/(```[\s\S]+?```|`[^`]+`)/g, 'codeblock');
+      if (/^(```[\s\S]+?```|`[^`]+`)$/.test(finalSentence)) {
+        finalSentence = finalSentence.replace(/(```[\s\S]+?```|`[^`]+`)/g, 'codeblock.');
+      } else {
+        finalSentence = finalSentence.replace(/(```[\s\S]+?```|`[^`]+`)/g, '. codeblock.');
+      }
       logger.info(`Replaced codeblock in the sentence "${originalSentence}".`);
     }
 
@@ -90,6 +98,11 @@ class TTSPlayer {
     } else if (/(\w)\1{2,}/g.test(finalSentence)) {
       finalSentence = finalSentence.replace(/(\w)\1{2,}/g, '$1$1');
       logger.info(`Replaced 3 or more repeating characters in the sentence "${originalSentence}".`);
+    }
+
+    if (extras?.hasImage) {
+      finalSentence = `${finalSentence}. Image attached.`;
+      logger.info(`Detected image attached with message "${finalSentence}".`);
     }
 
     logger.info(`Final sentence passed to TTS provider: "${finalSentence}".`);
