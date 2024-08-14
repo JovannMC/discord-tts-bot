@@ -28,7 +28,7 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
-          username: moonstarx
+          username: jovannmc
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Get Version From package.json
@@ -44,7 +44,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: moonstarx/discord-tts-bot:latest,moonstarx/discord-tts-bot:${{ steps.package-version.outputs.current-version }}
+          tags: jovannmc/discord-tts-bot:latest,jovannmc/discord-tts-bot:${{ steps.package-version.outputs.current-version }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           build-args: |

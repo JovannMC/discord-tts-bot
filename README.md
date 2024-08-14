@@ -1,30 +1,31 @@
 ![banner](https://i.imgur.com/HT7Wmv1.jpg)
 
-[![discord](https://img.shields.io/discord/730998659008823296.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/mhj3Zsv)
-[![ci-build-status](https://img.shields.io/github/workflow/status/moonstar-x/discord-tts-bot/CI?logo=github)](https://github.com/moonstar-x/discord-tts-bot)
-[![open-issues-count](https://img.shields.io/github/issues-raw/moonstar-x/discord-tts-bot?logo=github)](https://github.com/moonstar-x/discord-tts-bot)
-[![docker-image-size](https://img.shields.io/docker/image-size/moonstarx/discord-tts-bot?logo=docker)](https://hub.docker.com/repository/docker/moonstarx/discord-tts-bot)
-[![docker-pulls](https://img.shields.io/docker/pulls/moonstarx/discord-tts-bot?logo=docker)](https://hub.docker.com/repository/docker/moonstarx/discord-tts-bot)
+[![discord](https://img.shields.io/discord/1039186635402793010.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/XdfnKD9QVM)
+[![ci-build-status](https://img.shields.io/github/actions/workflow/status/JovannMC/discord-tts-bot/ci?branch=main?logo=github)](https://github.com/JovannMC/discord-tts-bot)
+[![open-issues-count](https://img.shields.io/github/issues-raw/JovannMC/discord-tts-bot?logo=github)](https://github.com/JovannMC/discord-tts-bot)
+[![docker-image-size](https://img.shields.io/docker/image-size/jovannmc/discord-tts-bot?logo=docker)](https://hub.docker.com/repository/docker/jovannmc/discord-tts-bot)
+[![docker-pulls](https://img.shields.io/docker/pulls/jovannmc/discord-tts-bot?logo=docker)](https://hub.docker.com/repository/docker/jovannmc/discord-tts-bot)
 
 # Discord TTS Bot
 
-This is a simple TTS Bot that uses the Google Translate TTS API. With this bot you can send Text-to-Speech messages in multiple languages using Google Translate or other TTS engines.
+This is a simple TTS Bot that uses the Google Translate and other TTS APIs, forked by [JovannMC](https://github.com/JovannMC/). With this bot you can send Text-to-Speech messages in multiple languages using Google Translate or other TTS engines.
 
-For more information, visit the bot's [official page](https://docs.moonstar-x.dev/discord-tts-bot/).
+For more information, visit the bot's [official page](https://docs.moonstar-x.dev/discord-tts-bot/)
+- This is from the parent repo - it does not contain the new info from this fork.
 
 ## Changes in this fork
 
 - New commands
-  - /join - Lets the bot join in your voice channel.
-  - /skip - Skips the current TTS message being said and moves to the next one in queue.
-  - /set_alias - Set an alternative way for the TTS to say a word/phrase for the user.
-  - /set_guild_alias - Set an alternative way for the TTS to say a word/phrase for the guild.
-  - /set_join_on_message - Sets if the bot joins the VC automatically when a message is sent on specific channels.
+  - `/join` - Lets the bot join in your voice channel.
+  - `/skip` - Skips the current TTS message being said and moves to the next one in queue.
+  - `/set_alias` - Set an alternative way for the TTS to say a word/phrase for the user.
+  - `/set_guild_alias` - Set an alternative way for the TTS to say a word/phrase for the guild.
+  - `/set_join_on_message` - Sets if the bot joins the VC automatically when a message is sent on specific channels.
 - Replace links and codeblocks with placeholders (to not annoy people)
 - Replace repeated punctuation & characters
 - Set aliases for the user or the entire guild (exact word match)
 - Bot automatically leaves when all users leave channel
-- Set timeout to 0 (never) to left bot stay in channel indefinitely (until all users leave or manually kicked)
+- Set timeout to 0 (never) to let the bot stay in channel indefinitely (until all users leave or manually kicked)
 - Stops some unnecessary messages/behaviour I wanted to sort out (for a server) lol
   - Add option to set whether the bot will join the VC automatically if a message is sent on TTS channels
   - Users won't receive a "need to be in a VC" message on TTS channels
@@ -55,7 +56,7 @@ npm install ffmpeg-static
 In order to self-host this bot, first you'll need to clone this repository.
 
 ```text
-git clone https://github.com/moonstar-x/discord-tts-bot.git
+git clone https://github.com/JovannMC/discord-tts-bot.git
 ```
 
 Install the dependencies with:
@@ -126,7 +127,7 @@ At the bottom a link should show up, access this link to invite your bot. You sh
 
 ## Configuration
 
-Inside the `config` folder, rename the file _settings.json.example_ to _settings.json_ and edit the file with your own Discord Token and other settings. If you don't have a discord token yet, you can see a guide on how to create it [here](https://github.com/moonstar-x/discord-downtime-notifier/wiki).
+Inside the `config` folder, rename the file _settings.json.example_ to _settings.json_ and edit the file with your own Discord Token and other settings. If you don't have a Discord token yet, you can see a guide on how to create it [here](https://github.com/moonstar-x/discord-downtime-notifier/wiki).
 
 Your file should look like this.
 
@@ -142,9 +143,11 @@ Your file should look like this.
   "provider_type": "level",
   "redis_url": "redis://ip:port",
   "enable_tts_channels": false,
-  "enable_keep_alive": false,
-  "enable_who_said": false
+  "enable_who_said": false,
+  "join_on_tts_channel_message_send": true,
+  "enable_keep_alive": false
 }
+
 ```
 
 You may also configure these options with environment variables. The settings set with the environment variables will take higher precedence than the ones in the config JSON file.
@@ -173,13 +176,13 @@ This table contains all the configuration settings you may specify with both env
 Before you run this image, you should deploy your commands, you can do so by running:
 
 ```text
- docker run -it --rm -e DISCORD_TOKEN="your_token" -e DISCORD_ENABLE_TTS_CHANNELS="true/false" moonstarx/discord-tts-bot npm run deploy
+ docker run -it --rm -e DISCORD_TOKEN="your_token" -e DISCORD_ENABLE_TTS_CHANNELS="true/false" jovannmc/discord-tts-bot npm run deploy
 ```
 
 After that, you can start a container with the bot's image by running:
 
 ```text
-docker run -it -e DISCORD_TOKEN="YOUR DISCORD TOKEN" moonstarx/discord-tts-bot:latest
+docker run -it -e DISCORD_TOKEN="YOUR DISCORD TOKEN" jovannmc/discord-tts-bot:latest
 ```
 
 Check [configuration](#configuration) to see which environment variables you can use.
@@ -213,7 +216,7 @@ Make sure to have `enable_keep_alive` set to `true` and use UptimeRobot to poll 
 
 To deploy to Heroku, you can click on the image below and login to your account.
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/moonstar-x/discord-tts-bot)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/JovannMC/discord-tts-bot)
 
 You can now go back to your app's _Overview_, make sure you disable the _web_ dyno and enable the _bot_ dyno. Your bot should now be up and running. Remember you can always check your bot's console if you access the _View Logs_ in the _More_ dropdown menu.
 
@@ -317,4 +320,4 @@ You can add this bot to your server by clicking the image below:
 
 ## Author
 
-This bot was made by [moonstar-x](https://github.com/moonstar-x). Modified by [JovannMC](https://github.com/JovannMC)
+This bot was made by [moonstar-x](https://github.com/moonstar-x). Forked by [JovannMC](https://github.com/JovannMC)

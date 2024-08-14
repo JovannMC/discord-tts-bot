@@ -46,7 +46,7 @@ class GoogleSetMySettingsCommand extends SlashCommand {
     const languageInfo = languages[language];
 
     if (!languageInfo) {
-      return interaction.reply({ content: localizer.t('command.google.settings.my.language.invalid')});
+      return interaction.reply({ content: localizer.t('command.google.settings.my.language.invalid') });
     }
 
     await this.client.ttsSettings.set(interaction.member, { [GoogleProvider.NAME]: { language } });

@@ -107,7 +107,7 @@ class AmazonSetMySettingsCommand extends SlashCommand {
     const languageInfo = languageData[language];
 
     if (!languageInfo) {
-      return interaction.reply({ content: localizer.t('command.amazon.settings.my.voice.invalidated')});
+      return interaction.reply({ content: localizer.t('command.amazon.settings.my.voice.invalidated') });
     }
 
     const voiceInfo = languageInfo.voices.find((v) => v.name.toLowerCase() === voice);
