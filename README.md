@@ -21,7 +21,8 @@ For more information, visit the bot's [official page](https://docs.moonstar-x.de
   - /set_guild_alias - Set an alternative way for the TTS to say a word/phrase for the guild.
   - /set_join_on_message - Sets if the bot joins the VC automatically when a message is sent on specific channels.
 - Replace links and codeblocks with placeholders (to not annoy people)
-- Set aliases for the user or the entire guild
+- Replace repeated punctuation & characters
+- Set aliases for the user or the entire guild (exact word match)
 - Bot automatically leaves when all users leave channel
 - Set timeout to 0 (never) to left bot stay in channel indefinitely (until all users leave or manually kicked)
 - Stops some unnecessary messages/behaviour I wanted to sort out (for a server) lol

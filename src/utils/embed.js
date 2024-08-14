@@ -1,27 +1,22 @@
 const { EMBED_FIELD_MAX_SIZE } = require('../common/constants');
 
-const splitContentForEmbedFields = (lines) => {
-  return lines.reduce((fields, line) => {
-    let lastIndex = fields.length - 1;
-    if (lastIndex < 0) {
-      lastIndex = 0;
+function splitContentForEmbedFields(content) {
+  const result = [];
+  let currentChunk = '';
+
+  content.split('\n').forEach((line) => {
+    if ((currentChunk + line).length > EMBED_FIELD_MAX_SIZE) {
+      result.push(currentChunk);
+      currentChunk = '';
     }
+    currentChunk += `${line}\n`;
+  });
 
-    const currentLength = fields[lastIndex] ? fields[lastIndex].length : 0;
+  if (currentChunk) {
+    result.push(currentChunk);
+  }
 
-    if (currentLength + line.length >= EMBED_FIELD_MAX_SIZE) {
-      fields.push(line);
-    } else {
-      if (!fields[lastIndex]) {
-        fields[lastIndex] = '';
-      }
-      fields[lastIndex] += line;
-    }
+  return result;
+}
 
-    return fields;
-  }, []);
-};
-
-module.exports = {
-  splitContentForEmbedFields
-};
+module.exports = { splitContentForEmbedFields };

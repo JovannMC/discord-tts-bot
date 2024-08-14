@@ -25,7 +25,8 @@ class AmazonLangsCommand extends LangsBaseCommand {
     const content = this.sortedLanguageKeys().map((key) => {
       const cur = languageData[key];
       return `${cur.emoji} ${cur.name} - '**/amazon_set_my language ${key}**'\n`;
-    });
+    }).join('');
+  
     const splitContent = splitContentForEmbedFields(content);
 
     splitContent.forEach((field, index) => {

@@ -2,6 +2,7 @@ const { SlashCommand } = require('@greencoast/discord.js-extended');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 const { MESSAGE_EMBED, WEBSITE_URL } = require('../../../common/constants');
+const { splitContentForEmbedFields } = require('../../../utils/embed');
 
 class HelpCommand extends SlashCommand {
   constructor(client) {
@@ -21,7 +22,10 @@ class HelpCommand extends SlashCommand {
         return text.concat(`${command.emoji} **/${command.name}** - ${command.description}\n`);
       }, '');
 
-      return { title: group.name, text: listOfCommands };
+      // Ensure listOfCommands is an array
+      const splitContent = splitContentForEmbedFields(listOfCommands);
+
+      return { title: group.name, text: splitContent };
     });
   }
 
@@ -33,10 +37,11 @@ class HelpCommand extends SlashCommand {
       .setColor(MESSAGE_EMBED.color)
       .setThumbnail(MESSAGE_EMBED.helpThumbnail);
 
-    for (const key in fields) {
-      const field = fields[key];
-      embed.addField(field.title, field.text);
-    }
+    fields.forEach((field) => {
+      field.text.forEach((content, index) => {
+        embed.addField(`${field.title} (Page ${index + 1})`, content);
+      });
+    });
 
     const row = new MessageActionRow()
       .addComponents(

@@ -27,13 +27,13 @@ class GoogleLangsCommand extends LangsBaseCommand {
     const content = this.sortedLanguageKeys().map((key) => {
       const cur = languages[key];
       return `${cur.emoji} ${cur.name} - '**/google_set_my language ${key}**'\n`;
-    });
+    }).join('');
+  
     const splitContent = splitContentForEmbedFields(content);
 
     splitContent.forEach((field, index) => {
       embed.addField(localizer.t('command.google.langs.embed.page', { number: index + 1 }), field);
     });
-
     return embed;
   }
 

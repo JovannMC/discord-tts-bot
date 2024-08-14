@@ -5,7 +5,7 @@ const MESSAGE_EMBED = {
   amazonLangURL: 'https://docs.moonstar-x.dev/discord-tts-bot/text-to-speech-providers/amazon-ttstool/#language-support',
   microsoftLangURL: 'https://docs.moonstar-x.dev/discord-tts-bot/text-to-speech-providers/microsoft-ttstool/#language-support',
   helpThumbnail: 'https://i.imgur.com/kzy3cTK.png',
-  helpURL: 'https://github.com/moonstar-x/discord-tts-bot/issues'
+  helpURL: 'https://github.com/JovannMC/discord-tts-bot/issues'
 };
 
 const EMBED_FIELD_MAX_SIZE = 1024;
@@ -15,7 +15,7 @@ const DISCONNECT_TIMEOUT = {
   MAX: 600
 };
 
-const WEBSITE_URL = 'https://docs.moonstar-x.dev/discord-tts-bot/';
+const WEBSITE_URL = 'https://github.com/JovannMC/discord-tts-bot';
 
 module.exports = {
   MESSAGE_EMBED,
