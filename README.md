@@ -1,7 +1,7 @@
 ![banner](https://i.imgur.com/HT7Wmv1.jpg)
 
 [![discord](https://img.shields.io/discord/1039186635402793010.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/XdfnKD9QVM)
-[![ci-build-status](https://img.shields.io/github/actions/workflow/status/JovannMC/discord-tts-bot/ci?branch=main?logo=github)](https://github.com/JovannMC/discord-tts-bot)
+[![ci-build-status](https://img.shields.io/github/actions/workflow/status/JovannMC/discord-tts-bot/ci.yml?logo=github?branch=master)](https://github.com/JovannMC/discord-tts-bot)
 [![open-issues-count](https://img.shields.io/github/issues-raw/JovannMC/discord-tts-bot?logo=github)](https://github.com/JovannMC/discord-tts-bot)
 [![docker-image-size](https://img.shields.io/docker/image-size/jovannmc/discord-tts-bot?logo=docker)](https://hub.docker.com/repository/docker/jovannmc/discord-tts-bot)
 [![docker-pulls](https://img.shields.io/docker/pulls/jovannmc/discord-tts-bot?logo=docker)](https://hub.docker.com/repository/docker/jovannmc/discord-tts-bot)
