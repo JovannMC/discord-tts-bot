@@ -92,9 +92,9 @@ class TTSPlayer {
     }
 
     // If the sentence has 3 or more punctuation marks in a row or if it has 3 or more repeating characters
-    if (/([^\w\s]{3,})/g.test(finalSentence)) {
-      finalSentence = finalSentence.replace(/([^\w\s]{3,})/g, '.');
-      logger.info(`Replaced 3 or more punctuation marks in the sentence "${originalSentence}".`);
+    if (/([^\w\s])\1{2,}/g.test(finalSentence)) {
+      finalSentence = finalSentence.replace(/([^\w\s])\1{2,}/g, '$1');
+      logger.info(`Replaced 3 or more repeating punctuation marks in the sentence "${originalSentence}".`);
     } else if (/(\w)\1{2,}/g.test(finalSentence)) {
       finalSentence = finalSentence.replace(/(\w)\1{2,}/g, '$1$1');
       logger.info(`Replaced 3 or more repeating characters in the sentence "${originalSentence}".`);
