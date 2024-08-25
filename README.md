@@ -23,6 +23,8 @@ For more information, visit the bot's [official page](https://docs.moonstar-x.de
   - `/set_join_on_message` - Sets if the bot joins the VC automatically when a message is sent on specific channels.
 - Replace links and codeblocks with placeholders (to not annoy people)
 - Replace repeated punctuation & characters
+- Handle attached files and images for TTS channels (including empty messages with just attachments)
+- Handle Discord emotes and Unicode emojis
 - Set aliases for the user or the entire guild (exact word match)
 - Bot automatically leaves when all users leave channel
 - Set timeout to 0 (never) to let the bot stay in channel indefinitely (until all users leave or manually kicked)
