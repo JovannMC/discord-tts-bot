@@ -29,10 +29,14 @@ class JoinCommand extends SlashCommand {
     const { name: guildName, id: guildId } = interaction.guild;
     const { channel: memberChannel } = interaction.member.voice;
 
-    const cantConnectReason = getCantConnectToChannelReason(memberChannel);
-    if (!memberChannel || cantConnectReason) {
-      await interaction.editReply(cantConnectReason ? localizer.t(cantConnectReason) : localizer.t('command.join.no_channel'));
+    if (!memberChannel) {
+      await interaction.editReply(localizer.t('command.join.no_channel'));
       return;
+    }
+
+    const cantConnectReason = getCantConnectToChannelReason(memberChannel);
+    if (cantConnectReason) {
+      return interaction.editReply(localizer.t(cantConnectReason));
     }
 
     if (!connection) {

@@ -11,7 +11,7 @@ LABEL org.opencontainers.image.title="Discord TTS Bot"
 LABEL org.opencontainers.image.description="A Text-to-Speech bot for Discord."
 LABEL org.opencontainers.image.source="https://github.com/JovannMC/discord-tts-bot"
 
-RUN apk add --no-cache ffmpeg python3 make g++ 
+RUN apk add --no-cache ffmpeg
 
 WORKDIR /opt/app
 
