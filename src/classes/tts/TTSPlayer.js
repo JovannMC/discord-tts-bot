@@ -50,7 +50,7 @@ class TTSPlayer {
     const guildAliases = guildSettings.aliases || {};
     const originalSentence = sentence;
     let finalSentence = sentence;
-  
+
     for (const [key, value] of Object.entries(userAliases)) {
       const regex = new RegExp(`\\b${key}\\b`, 'gi');
       if (!regex.test(sentence)) {
@@ -70,7 +70,7 @@ class TTSPlayer {
       finalSentence = finalSentence.replace(regex, value);
       logger.info(`Replaced "${key}" with "${value}" in the sentence "${sentence}". Found in guild aliases.`);
     }
-
+  
     // If the sentence contains a link
     if (/(https?:\/\/[^\s]+)/g.test(finalSentence)) {
       if (/^(https?:\/\/[^\s]+)$/.test(finalSentence)) {
@@ -80,7 +80,7 @@ class TTSPlayer {
       }
       logger.info(`Replaced link in the sentence "${originalSentence}".`);
     }
-
+  
     // If the sentence contains a multiline or single line codeblock
     if (/(```[\s\S]+?```|`[^`]+`)/g.test(finalSentence)) {
       if (/^(```[\s\S]+?```|`[^`]+`)$/.test(finalSentence)) {
@@ -90,7 +90,7 @@ class TTSPlayer {
       }
       logger.info(`Replaced codeblock in the sentence "${originalSentence}".`);
     }
-
+  
     // If the sentence has 3 or more punctuation marks in a row or if it has 3 or more repeating characters
     if (/([^\w\s])\1{2,}/g.test(finalSentence)) {
       finalSentence = finalSentence.replace(/([^\w\s])\1{2,}/g, '$1');
@@ -99,14 +99,18 @@ class TTSPlayer {
       finalSentence = finalSentence.replace(/(\w)\1{2,}/g, '$1$1');
       logger.info(`Replaced 3 or more repeating characters in the sentence "${originalSentence}".`);
     }
-
+  
     if (extras?.hasImage) {
-      finalSentence = `${finalSentence}. Image attached.`;
+      if (!finalSentence) {
+        finalSentence = 'Image attached';
+      } else {
+        finalSentence = `${finalSentence}. Image attached.`;
+      }
       logger.info(`Detected image attached with message "${finalSentence}".`);
     }
-
+  
     logger.info(`Final sentence passed to TTS provider: "${finalSentence}".`);
-
+  
     const provider = this.providerManager.getProvider(providerName);
     const payload = await provider.createPayload(finalSentence, extras);
     if (Array.isArray(payload)) {

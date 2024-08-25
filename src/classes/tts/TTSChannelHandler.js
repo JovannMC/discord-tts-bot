@@ -16,7 +16,7 @@ class TTSChannelHandler {
     const { channel, member } = message;
     
     try {
-      if (message.author.bot || !message.guild || message.content?.length < 1) {
+      if (message.author.bot || !message.guild) {
         return;
       }
 

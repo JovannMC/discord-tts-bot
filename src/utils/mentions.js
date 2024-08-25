@@ -1,7 +1,5 @@
 const { MessageMentions: { USERS_PATTERN, CHANNELS_PATTERN, ROLES_PATTERN } } = require('discord.js');
 
-const CUSTOM_EMOJI_PATTERN = /<:(.*?):(\d{17,19})>/g;
-
 const cleanMemberMentions = (message, members) => {
   return message.replace(USERS_PATTERN, (_, id) => members.get(id).displayName);
 };
@@ -15,7 +13,11 @@ const cleanRoleMentions = (message, roles) => {
 };
 
 const cleanEmojis = (message) => {
-  return message.replace(CUSTOM_EMOJI_PATTERN, (_, name) => name);
+  let newMessage = message;
+  newMessage = newMessage.replace(/<:(.+?):\d+>/g, 'Emote $1');
+  newMessage = newMessage.replace(/<a:(.+?):\d+>/g, 'Animated emote $1');
+  newMessage = newMessage.replace(/\p{Extended_Pictographic}/gu, (match) => `Emoji ${match}`);
+  return newMessage;
 };
 
 const cleanMessage = (message, { members, channels, roles }) => {
