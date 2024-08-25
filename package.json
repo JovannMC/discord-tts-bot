@@ -1,6 +1,6 @@
 {
   "name": "discord-tts-bot",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "A simple Discord TTS Bot that uses Google Translate and other TTS APIs. Forked by JovannMC",
   "main": "./src/app.js",
   "scripts": {
@@ -32,7 +32,7 @@
   },
   "homepage": "https://github.com/JovannMC/discord-tts-bot#readme",
   "dependencies": {
-    "@discordjs/builders": "^0.11.0",
+    "@discordjs/builders": "^0.16.0",
     "@discordjs/opus": "^0.9.0",
     "@discordjs/voice": "^0.17.0",
     "@greencoast/discord.js-extended": "^2.2.3",
