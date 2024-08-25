@@ -106,7 +106,16 @@ class TTSPlayer {
       } else {
         finalSentence = `${finalSentence}. Image attached.`;
       }
-      logger.info(`Detected image attached with message "${finalSentence}".`);
+      logger.info(`Detected image(s) attached with message "${finalSentence}".`);
+    }
+    
+    if (extras?.hasFile) {
+      if (!finalSentence) {
+        finalSentence = 'File attached';
+      } else {
+        finalSentence = `${finalSentence}. File attached.`;
+      }
+      logger.info(`Detected file(s) attached with message "${finalSentence}".`);
     }
   
     logger.info(`Final sentence passed to TTS provider: "${finalSentence}".`);

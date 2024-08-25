@@ -53,8 +53,12 @@ class TTSChannelHandler {
 
     const finalExtras = {
       ...extras,
-      hasImage: message.attachments.size > 0
+      hasImage: message.attachments.some((attachment) => attachment.contentType && attachment.contentType.startsWith('image/')),
+      // Some attachments don't return a contentType so we check for "null" values as well
+      hasFile: message.attachments.some((attachment) => attachment.contentType && !attachment.contentType.startsWith('image/') || !attachment.messageType)
     };
+
+    logger.info(`Message has image: ${finalExtras.hasImage}, has file: ${finalExtras.hasFile}.`);
 
     const { joinOnMessage } = channelSettings;
     if (!joinOnMessage && !myChannel || !memberChannel || myChannel !== memberChannel) {
@@ -73,7 +77,7 @@ class TTSChannelHandler {
     await ttsPlayer.voice.connect(memberChannel);
     logger.info(`Joining "${memberChannel.name}" (${memberChannel.id}) in "${guildName}" (${guildId}).`);
     await message.reply(localizer.t('command.say.joined', { channel: memberChannel.toString() }));
-
+  
     return ttsPlayer.say(textToSay, message.member, channelSettings.provider, finalExtras);
   }
 }
