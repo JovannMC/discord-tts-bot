@@ -54,11 +54,9 @@ class TTSChannelHandler {
     const finalExtras = {
       ...extras,
       hasImage: message.attachments.some((attachment) => attachment.contentType && attachment.contentType.startsWith('image/')),
-      // Some attachments don't return a contentType so we check for "null" values as well
-      hasFile: message.attachments.some((attachment) => attachment.contentType && !attachment.contentType.startsWith('image/') || !attachment.messageType)
+      // Some attachments don't return a MIME/contentType so we check for "null" values as well
+      hasFile: message.attachments.some((attachment) => !attachment.contentType || !attachment.contentType.startsWith('image/'))
     };
-
-    logger.info(`Message has image: ${finalExtras.hasImage}, has file: ${finalExtras.hasFile}.`);
 
     const { joinOnMessage } = channelSettings;
     if (!joinOnMessage && !myChannel || !memberChannel || myChannel !== memberChannel) {

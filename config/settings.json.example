@@ -1,7 +1,7 @@
 {
   "token": "YOUR_DISCORD_TOKEN",
   "prefix": "$",
-  "owner_id": "123123123",
+  "owner_id": "0",
   "owner_reporting": false,
   "presence_refresh_interval": 600000,
   "default_disconnect_timeout": 5,
