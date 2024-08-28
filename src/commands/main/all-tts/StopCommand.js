@@ -22,8 +22,7 @@ class StopCommand extends SlashCommand {
     const ttsPlayer = this.client.getTTSPlayer(interaction.guild);
     const connection = ttsPlayer.voice.getConnection();
 
-    const { name: guildName, id: guildId } = interaction.guild;
-    const myVoice = interaction.guild.members.me.voice;
+    const { me: { voice: myVoice }, name: guildName, id: guildId } = interaction.guild;
     const myChannel = myVoice?.channel;
     const { channel: memberChannel } = interaction.member.voice;
 

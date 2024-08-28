@@ -38,8 +38,7 @@ class SayBaseCommand extends SlashCommand {
     const providerName = this.getProviderName(currentSettings);
     const extras = currentSettings[providerName];
 
-    const { name: guildName, id: guildId, members, channels, roles } = interaction.guild;
-    const myVoice = interaction.guild.members.me.voice;
+    const { me: { voice: myVoice }, name: guildName, id: guildId, members, channels, roles } = interaction.guild;
     const { channel: memberChannel } = interaction.member.voice;
     const myChannel = myVoice?.channel;
 
