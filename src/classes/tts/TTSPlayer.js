@@ -60,7 +60,7 @@ class TTSPlayer {
     
     // Guild aliases
     for (const [key, value] of Object.entries(guildAliases)) {
-      const regex = new RegExp(`\b${key}\\b`, 'gi');
+      const regex = new RegExp(`\\b${key}\\b`, 'gi');
       if (!regex.test(finalSentence)) {
         continue;
       }
