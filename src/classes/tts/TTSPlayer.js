@@ -49,7 +49,7 @@ class TTSPlayer {
   
     // User aliases
     for (const [key, value] of Object.entries(userAliases)) {
-      const regex = new RegExp(`\\b${key}\\b`, 'gi');
+      const regex = new RegExp(`${key}`, 'gi');
       if (!regex.test(finalSentence)) {
         continue;
       }
@@ -60,7 +60,7 @@ class TTSPlayer {
     
     // Guild aliases
     for (const [key, value] of Object.entries(guildAliases)) {
-      const regex = new RegExp(`\\b${key}\\b`, 'gi');
+      const regex = new RegExp(`${key}`, 'gi');
       if (!regex.test(finalSentence)) {
         continue;
       }
@@ -68,7 +68,7 @@ class TTSPlayer {
       finalSentence = finalSentence.replace(regex, value);
       logger.info(`Replaced "${key}" with "${value}" in the sentence "${originalSentence}". Found in guild aliases.`);
     }
-  
+    
     // If the sentence contains a link
     if (/(https?:\/\/[^\s]+)/g.test(finalSentence)) {
       if (/^(https?:\/\/[^\s]+)$/.test(finalSentence)) {
