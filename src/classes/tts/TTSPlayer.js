@@ -95,9 +95,9 @@ class TTSPlayer {
       logger.info(`Replaced 3 or more repeating punctuation marks in the sentence "${originalSentence}".`);
     }
     
-    // If the sentence has 3 or more repeating characters in a row
-    if (/(\w)\1{2,}/g.test(finalSentence)) {
-      finalSentence = finalSentence.replace(/(\w)\1{2,}/g, 'Line of $1\'s, ');
+    // If the sentence has 3 or more repeating characters in a row within a word
+    if (/\b(\w)\1{2,}\b/g.test(finalSentence)) {
+      finalSentence = finalSentence.replace(/\b(\w)\1{2,}\b/g, 'Line of $1\'s, ');
       logger.info(`Replaced 3 or more repeating characters in the sentence "${originalSentence}".`);
     }
   
