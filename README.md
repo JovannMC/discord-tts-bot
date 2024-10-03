@@ -316,6 +316,8 @@ Here's a list of all the supported languages by the Google Translate provider:
 
 ## Add this bot to your server
 
+> This invites the upstream's public bot and not the fork's - there is no official public bot with this fork hosted currently.
+
 You can add this bot to your server by clicking the image below:
 
 [![Invite this bot to your server](https://i.imgur.com/4krikIF.jpg)](https://discord.com/api/oauth2/authorize?client_id=519207945318170654&permissions=3148800&scope=bot%20applications.commands)
