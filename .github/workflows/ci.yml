@@ -32,8 +32,6 @@ jobs:
     name: Trigger Docker Build
     runs-on: ubuntu-latest
     needs: test
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && needs.test.result == 'success' }}
-
     steps:
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1
