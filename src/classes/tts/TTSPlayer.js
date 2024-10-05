@@ -49,7 +49,9 @@ class TTSPlayer {
   
     // User aliases
     for (const [key, value] of Object.entries(userAliases)) {
-      const regex = new RegExp(`${key}`, 'gi');
+      const hasSpecialChars = /[:;][0-9]/.test(key);
+      const regex = hasSpecialChars ? new RegExp(`${key}`, 'gi') : new RegExp(`\\b${key}\\b`, 'gi');
+      
       if (!regex.test(finalSentence)) {
         continue;
       }
@@ -60,7 +62,9 @@ class TTSPlayer {
     
     // Guild aliases
     for (const [key, value] of Object.entries(guildAliases)) {
-      const regex = new RegExp(`${key}`, 'gi');
+      const hasSpecialChars = /[:;][0-9]/.test(key);
+      const regex = hasSpecialChars ? new RegExp(`${key}`, 'gi') : new RegExp(`\\b${key}\\b`, 'gi');
+      
       if (!regex.test(finalSentence)) {
         continue;
       }
